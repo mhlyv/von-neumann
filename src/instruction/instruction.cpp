@@ -3,12 +3,12 @@
 
 #include "instruction/instruction.h"
 #include "memory/memory.h"
-#include "vector/vector.h"
+#include "vector/vector.hpp"
 
 namespace instruction {
 
 Instruction::Instruction(size_t opcode,
-		const vector::Vector<memory::Data *> &operands) :
+		vector::Vector<memory::Data *> &operands) :
 	memory::Data(opcode), operands(operands) {
 }
 
@@ -38,7 +38,7 @@ void Instruction::write(memory::Data *data) {
 void Instruction::operator()() {
 }
 
-memory::Data *Instruction::clone() const {
+memory::Data *Instruction::clone() {
 	return new Instruction(this->read(), this->operands);
 }
 

@@ -32,23 +32,29 @@ file(GLOB SRC_instruction
 	${PROJECT_SOURCE_DIR}/instruction/*.hpp
 )
 
-# VECTOR
-add_library(vector
-	${SRC_vector}
+file(GLOB SRC_test
+	${PROJECT_SOURCE_DIR}/test/*.cpp
+	${PROJECT_SOURCE_DIR}/test/*.h
+	${PROJECT_SOURCE_DIR}/test/*.hpp
 )
 
-target_include_directories(vector
-	PUBLIC ${PROJECT_SOURCE_DIR}
-)
+# VECTOR
+# add_library(vector
+# 	${SRC_vector}
+# )
+# 
+# target_include_directories(vector
+# 	PUBLIC ${PROJECT_SOURCE_DIR}
+# )
 
 # MEMORY
 add_library(memory
 	${SRC_memory}
+ 	${SRC_vector}
 )
 
-target_link_libraries(memory
-	vector
-)
+# target_link_libraries(memory
+# )
 
 target_include_directories(memory
 	PUBLIC ${PROJECT_SOURCE_DIR}
@@ -57,10 +63,10 @@ target_include_directories(memory
 # INSTRUCTION
 add_library(instruction
 	${SRC_instruction}
+ 	${SRC_vector}
 )
 
 target_link_libraries(instruction
-	vector
 	memory
 )
 
@@ -71,14 +77,30 @@ target_include_directories(instruction
 # NEUMANN
 add_executable(neumann
 	${SRC_main}
+ 	${SRC_vector}
 )
 
 target_link_libraries(neumann
-	vector
 	memory
 	instruction
 )
 
 target_include_directories(neumann
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
+# TEST
+add_executable(test_neumann
+	${SRC_test}
+	${SRC_vector}
+ 	${SRC_vector}
+)
+
+target_link_libraries(test_neumann
+	memory
+	instruction
+)
+
+target_include_directories(test_neumann
 	PUBLIC ${PROJECT_SOURCE_DIR}
 )

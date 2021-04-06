@@ -4,7 +4,7 @@
 #include <stddef.h>
 
 #include "memory/memory.h"
-#include "vector/vector.h"
+#include "vector/vector.hpp"
 
 namespace instruction {
 
@@ -12,12 +12,12 @@ class Instruction : public memory::Data {
 private:
 	vector::Vector<memory::Data *> operands;
 public:
-	Instruction(size_t opcode, const vector::Vector<memory::Data *> &operands);
+	Instruction(size_t opcode, vector::Vector<memory::Data *> &operands);
 	size_t n_operands() const;
 	memory::Data &operator[](size_t i);
 	void write(memory::Data *data);
 	virtual void operator()();
-	memory::Data *clone() const;
+	memory::Data *clone();
 	virtual ~Instruction();
 };
 

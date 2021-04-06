@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "memory/memory.h"
+#include "vector/vector.hpp"
 
 namespace args {
 
@@ -68,5 +69,6 @@ int main(const int argc, const char **argv) {
 	if (config::verbose) {
 		config::PrintConfig();
 	}
+
 	return 0;
 }

@@ -1,14 +1,43 @@
+#ifndef __VECTOR_H__
+#define __VECTOR_H__
+
 #include <stddef.h>
 #include <stdexcept>
 
-#include "vector/vector.h"
-
 namespace vector {
+
+template<typename T>
+class Vector {
+private:
+	size_t len;
+	T *data;
+public:
+	Vector();
+	Vector(Vector<T> &vec);
+	Vector(const Vector<T> &vec);
+	Vector<T> &operator=(Vector<T> &vec);
+	Vector<T> &operator=(const Vector<T> &vec);
+	size_t size() const;
+	T& operator[](size_t i);
+	void append(T data);
+	void clean();
+	~Vector();
+};
 
 template<typename T>
 Vector<T>::Vector() {
 	this->data = NULL;
 	this->len = 0;
+}
+
+template<typename T>
+Vector<T>::Vector(Vector<T> &vec) {
+	this->len = vec.size();
+	this->data = new T[this->len];
+
+	for (size_t i = 0; i < this->len; i++) {
+		this->data[i] = vec[i];
+	}
 }
 
 template<typename T>
@@ -19,6 +48,21 @@ Vector<T>::Vector(const Vector<T> &vec) {
 	for (size_t i = 0; i < this->len; i++) {
 		this->data[i] = vec[i];
 	}
+}
+
+template<typename T>
+Vector<T> &Vector<T>::operator=(Vector<T> &vec) {
+	if (vec.size() != this->len) {
+		delete[] this->data;
+		this->len = vec.size();
+		this->data = new T[this->len];
+	}
+
+	for (size_t i = 0; i < this->len; i++) {
+		this->data[i] = vec[i];
+	}
+
+	return *this;
 }
 
 template<typename T>
@@ -77,3 +121,5 @@ Vector<T>::~Vector() {
 }
 
 }
+
+#endif // __VECTOR_H__

@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "vector/vector.h"
+#include "vector/vector.hpp"
 
 namespace memory {
 
@@ -22,11 +22,11 @@ public:
 
 class Memory {
 private:
-	Data *memory;
+	Data **memory;
 	const size_t len;
 public:
 	Memory(size_t len);
-	Data &operator[](size_t i);
+	Data *&operator[](size_t i);
 	~Memory();
 };
 
