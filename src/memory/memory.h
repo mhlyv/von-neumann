@@ -1,36 +1,32 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
 
-#include <cctype>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "vector/vector.h"
 
 namespace memory {
 
-class MemoryElement {
-public:
-	virtual ~MemoryElement() {}
-};
-
-// A MemoryElement to store a single object
-template<typename T>
-class Data : public MemoryElement {
+class Data {
 private:
-	T data;
+	uint64_t data;
 public:
 	Data();
-	Data(T data);
-	T& read();
-	void write(T data);
-	~Data();
+	Data(uint64_t data);
+	uint64_t read() const;
+	virtual void write(Data *data);
+	virtual Data *clone() const;
+	virtual ~Data();
 };
 
 class Memory {
 private:
-	const std::size_t n_elements;
-	MemoryElement **elements;
-	Memory();
+	Data *memory;
+	const size_t len;
 public:
-	Memory(std::size_t n);
-	MemoryElement &operator[](std::size_t i);
+	Memory(size_t len);
+	Data &operator[](size_t i);
 	~Memory();
 };
 

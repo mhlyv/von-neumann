@@ -1,24 +1,25 @@
-#include <cctype>
+#include <stddef.h>
 #include <stdexcept>
 
 #include "memory/memory.h"
+#include "vector/vector.h"
 
 namespace memory {
 
-Memory::Memory(std::size_t n) : n_elements(n) {
-	this->elements = new MemoryElement *[this->n_elements];
+Memory::Memory(size_t len) : len(len) {
+	this->memory = new Data[this->len];
 }
 
-MemoryElement &Memory::operator[](std::size_t i) {
-	if (i >= this->n_elements) {
-		throw std::out_of_range("Index is out of range");
+Data &Memory::operator[](size_t i) {
+	if (i >= this->len) {
+		throw std::out_of_range("Index out of range");
 	}
 
-	return *this->elements[i];
+	return this->memory[i];
 }
 
 Memory::~Memory() {
-	delete[] this->elements;
+	delete[] this->memory;
 }
 
 }

@@ -20,9 +20,63 @@ file(GLOB SRC_memory
 	${PROJECT_SOURCE_DIR}/memory/*.hpp
 )
 
+file(GLOB SRC_vector
+	${PROJECT_SOURCE_DIR}/vector/*.cpp
+	${PROJECT_SOURCE_DIR}/vector/*.h
+	${PROJECT_SOURCE_DIR}/vector/*.hpp
+)
+
+file(GLOB SRC_instruction
+	${PROJECT_SOURCE_DIR}/instruction/*.cpp
+	${PROJECT_SOURCE_DIR}/instruction/*.h
+	${PROJECT_SOURCE_DIR}/instruction/*.hpp
+)
+
+# VECTOR
+add_library(vector
+	${SRC_vector}
+)
+
+target_include_directories(vector
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
+# MEMORY
+add_library(memory
+	${SRC_memory}
+)
+
+target_link_libraries(memory
+	vector
+)
+
+target_include_directories(memory
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
+# INSTRUCTION
+add_library(instruction
+	${SRC_instruction}
+)
+
+target_link_libraries(instruction
+	vector
+	memory
+)
+
+target_include_directories(instruction
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
+# NEUMANN
 add_executable(neumann
 	${SRC_main}
-	${SRC_memory}
+)
+
+target_link_libraries(neumann
+	vector
+	memory
+	instruction
 )
 
 target_include_directories(neumann
