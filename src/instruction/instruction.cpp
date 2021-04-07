@@ -5,7 +5,7 @@
 #include "memory/memory.h"
 #include "vector/vector.hpp"
 
-namespace instruction {
+namespace inst {
 
 Instruction::Instruction(size_t opcode,
 		vector::Vector<memory::Data *> &operands) :

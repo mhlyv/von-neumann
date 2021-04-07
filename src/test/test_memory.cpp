@@ -21,7 +21,7 @@ void test_memory_storage() {
 	vector::Vector<memory::Data *> operands;
 
 	operands.append(op);
-	instruction::Instruction *inst = new instruction::Instruction(13, operands);
+	inst::Instruction *inst = new inst::Instruction(13, operands);
 
 	for (size_t i = 0; i < 1000; i++) {
 		if (i % 2 == 0) {
@@ -33,7 +33,7 @@ void test_memory_storage() {
 
 	for (size_t i = 0; i < 1000; i++) {
 		if (i % 2 == 0) {
-			instruction::Instruction *tmp = (instruction::Instruction *)m[i];
+			inst::Instruction *tmp = (inst::Instruction *)m[i];
 			assert(tmp->read() == 13);
 			assert(tmp->n_operands() == inst->n_operands());
 			for (size_t j = 0; j < operands.size(); j++) {

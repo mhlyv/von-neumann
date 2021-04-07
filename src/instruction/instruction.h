@@ -6,7 +6,7 @@
 #include "memory/memory.h"
 #include "vector/vector.hpp"
 
-namespace instruction {
+namespace inst {
 
 class Instruction : public memory::Data {
 private:
