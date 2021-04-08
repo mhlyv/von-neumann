@@ -1,5 +1,5 @@
-#ifndef __VECTOR_H__
-#define __VECTOR_H__
+#ifndef __VECTOR_HPP__
+#define __VECTOR_HPP__
 
 #include <stddef.h>
 #include <stdexcept>
@@ -122,4 +122,4 @@ Vector<T>::~Vector() {
 
 }
 
-#endif // __VECTOR_H__
+#endif // __VECTOR_HPP__
