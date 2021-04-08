@@ -26,6 +26,12 @@ file(GLOB SRC_vector
 	${PROJECT_SOURCE_DIR}/vector/*.hpp
 )
 
+file(GLOB SRC_pair
+	${PROJECT_SOURCE_DIR}/pair/*.cpp
+	${PROJECT_SOURCE_DIR}/pair/*.h
+	${PROJECT_SOURCE_DIR}/pair/*.hpp
+)
+
 file(GLOB SRC_instruction
 	${PROJECT_SOURCE_DIR}/instruction/*.cpp
 	${PROJECT_SOURCE_DIR}/instruction/*.h
@@ -43,15 +49,6 @@ file(GLOB SRC_control_unit
 	${PROJECT_SOURCE_DIR}/control_unit/*.h
 	${PROJECT_SOURCE_DIR}/control_unit/*.hpp
 )
-
-# VECTOR
-# add_library(vector
-# 	${SRC_vector}
-# )
-# 
-# target_include_directories(vector
-# 	PUBLIC ${PROJECT_SOURCE_DIR}
-# )
 
 # MEMORY
 add_library(memory
