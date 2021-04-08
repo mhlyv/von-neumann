@@ -3,6 +3,7 @@
 
 #include "instruction/instruction.h"
 #include "memory/memory.h"
+#include "pair/pair.hpp"
 #include "vector/vector.hpp"
 
 namespace test {
@@ -17,10 +18,10 @@ void test_memory_constructor() {
 void test_memory_storage() {
 	memory::Memory m = 1000;
 	memory::Data *dp = new memory::Data(42);
-	memory::Data *op = new memory::Data(1234);
-	vector::Vector<memory::Data *> operands;
+	inst::Operand *operand = new inst::Operand(new memory::Data(1234), false);
+	vector::Vector<inst::Operand *> operands;
 
-	operands.append(op);
+	operands.append(operand);
 	inst::Instruction *inst = new inst::Instruction(13, operands);
 
 	for (size_t i = 0; i < 1000; i++) {
@@ -37,7 +38,8 @@ void test_memory_storage() {
 			assert(tmp->read() == 13);
 			assert(tmp->n_operands() == inst->n_operands());
 			for (size_t j = 0; j < operands.size(); j++) {
-				assert((*tmp)[j].read() == operands[j]->read());
+				assert((*tmp)[j].left()->read() == operands[j]->left()->read());
+				assert((*tmp)[j] == *operands[j]);
 			}
 			(*tmp)();
 		} else {
@@ -45,8 +47,9 @@ void test_memory_storage() {
 		}
 	}
 
+	delete operand->left();
+	delete operand;
 	delete inst;
-	delete op;
 	delete dp;
 }
 

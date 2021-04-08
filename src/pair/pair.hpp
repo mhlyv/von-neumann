@@ -9,6 +9,9 @@ private:
 	L l;
 	R r;
 public:
+	Pair() {
+	}
+
 	Pair(L l, R r) : l(l), r(r) {
 	}
 
@@ -24,6 +27,10 @@ public:
 		l = p.left();
 		r = p.right();
 		return *this;
+	}
+
+	bool operator==(Pair<L, R> &p) {
+		return p.left() == l && p.right() == r;
 	}
 };
 

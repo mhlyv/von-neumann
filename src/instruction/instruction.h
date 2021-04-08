@@ -4,17 +4,21 @@
 #include <stddef.h>
 
 #include "memory/memory.h"
+#include "pair/pair.hpp"
 #include "vector/vector.hpp"
 
 namespace inst {
 
+typedef pair::Pair<memory::Data *, bool> Operand;
+
 class Instruction : public memory::Data {
 private:
-	vector::Vector<memory::Data *> operands;
+	// the boolean is true if the operand is a register, otherwise false
+	vector::Vector<Operand *> operands;
 public:
-	Instruction(size_t opcode, vector::Vector<memory::Data *> &operands);
+	Instruction(size_t opcode, vector::Vector<Operand *> &operands);
 	size_t n_operands() const;
-	memory::Data &operator[](size_t i);
+	Operand &operator[](size_t i);
 	void write(memory::Data *data);
 	virtual void operator()();
 	memory::Data *clone();

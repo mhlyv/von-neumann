@@ -67,6 +67,7 @@ target_include_directories(memory
 add_library(instruction
 	${SRC_instruction}
  	${SRC_vector}
+	${SRC_pair}
 )
 
 target_link_libraries(instruction
@@ -95,6 +96,7 @@ target_include_directories(control_unit
 add_executable(neumann
 	${SRC_main}
  	${SRC_vector}
+	${SRC_pair}
 )
 
 target_link_libraries(neumann
@@ -111,6 +113,7 @@ target_include_directories(neumann
 add_executable(test_neumann
 	${SRC_test}
 	${SRC_vector}
+	${SRC_pair}
 )
 
 target_link_libraries(test_neumann
