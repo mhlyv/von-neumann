@@ -33,26 +33,36 @@ Vector<T>::Vector() {
 
 template<typename T>
 Vector<T>::Vector(size_t len) : len(len) {
-	this->data = new T[len];
+	if (len > 0) {
+		this->data = new T[len];
+	} else {
+		this->data = NULL;
+	}
 }
 
 template<typename T>
 Vector<T>::Vector(Vector<T> &vec) {
 	this->len = vec.size();
-	this->data = new T[this->len];
-
-	for (size_t i = 0; i < this->len; i++) {
-		this->data[i] = vec[i];
+	if (this->len > 0) {
+		this->data = new T[this->len];
+		for (size_t i = 0; i < this->len; i++) {
+			this->data[i] = vec[i];
+		}
+	} else {
+		this->data = NULL;
 	}
 }
 
 template<typename T>
 Vector<T>::Vector(const Vector<T> &vec) {
 	this->len = vec.size();
-	this->data = new T[this->len];
-
-	for (size_t i = 0; i < this->len; i++) {
-		this->data[i] = vec[i];
+	if (this->len > 0) {
+		this->data = new T[this->len];
+		for (size_t i = 0; i < this->len; i++) {
+			this->data[i] = vec[i];
+		}
+	} else {
+		this->data = NULL;
 	}
 }
 
