@@ -50,6 +50,12 @@ file(GLOB SRC_control_unit
 	${PROJECT_SOURCE_DIR}/control_unit/*.hpp
 )
 
+file(GLOB SRC_processing_unit
+	${PROJECT_SOURCE_DIR}/processing_unit/*.cpp
+	${PROJECT_SOURCE_DIR}/processing_unit/*.h
+	${PROJECT_SOURCE_DIR}/processing_unit/*.hpp
+)
+
 # MEMORY
 add_library(memory
 	${SRC_memory}
@@ -92,6 +98,20 @@ target_include_directories(control_unit
 	PUBLIC ${PROJECT_SOURCE_DIR}
 )
 
+# PROCESSING_UNIT
+add_library(processing_unit
+	${SRC_processing_unit}
+)
+
+target_link_libraries(processing_unit
+	memory
+	instruction
+)
+
+target_include_directories(processing_unit
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
 # NEUMANN
 add_executable(neumann
 	${SRC_main}
@@ -103,6 +123,7 @@ target_link_libraries(neumann
 	memory
 	instruction
 	control_unit
+	processing_unit
 )
 
 target_include_directories(neumann
@@ -120,6 +141,7 @@ target_link_libraries(test_neumann
 	memory
 	instruction
 	control_unit
+	processing_unit
 )
 
 target_include_directories(test_neumann

@@ -13,6 +13,7 @@ private:
 	T *data;
 public:
 	Vector();
+	Vector(size_t len);
 	Vector(Vector<T> &vec);
 	Vector(const Vector<T> &vec);
 	Vector<T> &operator=(Vector<T> &vec);
@@ -28,6 +29,11 @@ template<typename T>
 Vector<T>::Vector() {
 	this->data = NULL;
 	this->len = 0;
+}
+
+template<typename T>
+Vector<T>::Vector(size_t len) : len(len) {
+	this->data = new T[len];
 }
 
 template<typename T>

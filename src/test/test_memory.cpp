@@ -5,6 +5,7 @@
 #include "memory/memory.h"
 #include "pair/pair.hpp"
 #include "vector/vector.hpp"
+#include "processing_unit/register.h"
 
 namespace test {
 
@@ -41,7 +42,9 @@ void test_memory_storage() {
 				assert((*tmp)[j].left()->read() == operands[j]->left()->read());
 				assert((*tmp)[j] == *operands[j]);
 			}
-			(*tmp)();
+
+			vector::Vector<Register> regs;
+			(*tmp)(regs); // try executing it is here already
 		} else {
 			assert(m[i]->read() == dp->read());
 		}

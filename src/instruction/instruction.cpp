@@ -4,6 +4,7 @@
 #include "instruction/instruction.h"
 #include "memory/memory.h"
 #include "pair/pair.hpp"
+#include "processing_unit/register.h"
 #include "vector/vector.hpp"
 
 namespace inst {
@@ -36,7 +37,9 @@ void Instruction::write(memory::Data *data) {
 	}
 }
 
-void Instruction::operator()() {
+void Instruction::operator()(vector::Vector<Register> &registers) {
+	// the default instruction does nothing
+	(void)registers;
 }
 
 memory::Data *Instruction::clone() {
