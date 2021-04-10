@@ -6,11 +6,8 @@
 
 namespace cu {
 
-ControlUnit::ControlUnit() : instruction_register(NULL), program_counter(0) {
-}
-
-ControlUnit::ControlUnit(memory::Memory &mem) :
-	instruction_register((inst::Instruction *)mem[0]), program_counter(0) {
+ControlUnit::ControlUnit(memory::Data &pc) :
+	instruction_register(NULL), program_counter(pc) {
 }
 
 void ControlUnit::fetch(memory::Memory &mem) {
@@ -19,7 +16,7 @@ void ControlUnit::fetch(memory::Memory &mem) {
 	this->program_counter++;
 }
 
-const inst::Instruction &ControlUnit::instruction() const {
+inst::Instruction &ControlUnit::instruction() {
 	return *this->instruction_register;
 }
 

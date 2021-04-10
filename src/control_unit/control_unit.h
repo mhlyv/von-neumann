@@ -10,13 +10,12 @@ namespace cu {
 
 class ControlUnit {
 private:
-	const inst::Instruction *instruction_register;
-	memory::Data program_counter;
+	inst::Instruction *instruction_register;
+	memory::Data &program_counter;
 public:
-	ControlUnit();
-	ControlUnit(memory::Memory &mem);
+	ControlUnit(memory::Data &pc);
 	void fetch(memory::Memory &mem);
-	const inst::Instruction &instruction() const;
+	inst::Instruction &instruction();
 	void reset();
 	~ControlUnit();
 };

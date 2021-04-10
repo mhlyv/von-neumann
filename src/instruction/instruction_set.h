@@ -14,8 +14,10 @@
 	}; \
 	void name::operator()(Register *registers)
 
-namespace inst {
 
+
+namespace inst {
+const size_t exit_opcode(1);
 }
 
 #undef INSTRUCTION
