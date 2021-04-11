@@ -10,14 +10,14 @@
 namespace test {
 
 void test_memory_constructor() {
-	memory::Memory m = 1000;
+	memory::Memory m(1000);
 	for (size_t i = 0; i < 1000; i++) {
 		m[i];
 	}
 }
 
 void test_memory_storage() {
-	memory::Memory m = 1000;
+	memory::Memory m(1000);
 	memory::Data *dp = new memory::Data(42);
 	inst::Operand *operand = new inst::Operand(new memory::Data(1234), false);
 	vector::Vector<inst::Operand *> operands;

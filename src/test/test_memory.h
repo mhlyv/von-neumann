@@ -1,5 +1,5 @@
-#ifndef __TEST_MEMORY_H__
-#define __TEST_MEMORY_H__
+#ifndef TEST_MEMORY_H
+#define TEST_MEMORY_H
 
 namespace test {
 
@@ -7,4 +7,4 @@ void test_memory();
 
 }
 
-#endif // __TEST_MEMORY_H__
+#endif // TEST_MEMORY_H

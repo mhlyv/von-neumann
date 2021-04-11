@@ -22,7 +22,7 @@ void Data::write(Data *data) {
 	this->data = data->read();
 }
 
-Data *Data::clone() const {
+Data *Data::clone() {
 	return new Data(this->data);
 }
 

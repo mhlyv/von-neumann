@@ -1,5 +1,5 @@
-#ifndef __PROCESSING_UNIT_H__
-#define __PROCESSING_UNIT_H__
+#ifndef PROCESSING_UNIT_H
+#define PROCESSING_UNIT_H
 
 #include <stddef.h>
 
@@ -20,4 +20,4 @@ public:
 
 }
 
-#endif // __PROCESSING_UNIT_H__
+#endif // PROCESSING_UNIT_H

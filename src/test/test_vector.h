@@ -1,5 +1,5 @@
-#ifndef __TEST_VECTOR_H__
-#define __TEST_VECTOR_H__
+#ifndef TEST_VECTOR_H
+#define TEST_VECTOR_H
 
 namespace test {
 
@@ -7,4 +7,4 @@ void test_vector();
 
 }
 
-#endif // __TEST_VECTOR_H__
+#endif // TEST_VECTOR_H

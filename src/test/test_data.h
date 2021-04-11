@@ -1,5 +1,5 @@
-#ifndef __TEST_DATA_H__
-#define __TEST_DATA_H__
+#ifndef TEST_DATA_H
+#define TEST_DATA_H
 
 namespace test {
 
@@ -7,4 +7,4 @@ void test_data();
 
 }
 
-#endif // __TEST_DATA_H__
+#endif // TEST_DATA_H

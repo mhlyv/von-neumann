@@ -1,5 +1,5 @@
-#ifndef __CONFIG_H__
-#define __CONFIG_H__
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <cctype>
 #include <iostream>
@@ -7,7 +7,7 @@
 namespace config {
 
 bool verbose = false;
-const char *filename = NULL;
+const char *filename = nullptr;
 std::size_t memory_size(10000);
 
 void PrintConfig() {
@@ -18,4 +18,4 @@ void PrintConfig() {
 
 }
 
-#endif // __CONFIG_H__
+#endif // CONFIG_H

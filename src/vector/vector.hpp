@@ -1,5 +1,5 @@
-#ifndef __VECTOR_HPP__
-#define __VECTOR_HPP__
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 #include <stddef.h>
 #include <stdexcept>
@@ -9,7 +9,7 @@ namespace vector {
 template<typename T>
 class Vector {
 private:
-	size_t len;
+	size_t length;
 	T *data;
 public:
 	Vector();
@@ -20,61 +20,61 @@ public:
 	Vector<T> &operator=(const Vector<T> &vec);
 	size_t size() const;
 	T& operator[](size_t i);
-	void append(T data);
+	void append(T d);
 	void clean();
 	~Vector();
 };
 
 template<typename T>
 Vector<T>::Vector() {
-	this->data = NULL;
-	this->len = 0;
+	this->data = nullptr;
+	this->length = 0;
 }
 
 template<typename T>
-Vector<T>::Vector(size_t len) : len(len) {
+Vector<T>::Vector(size_t len) : length(len) {
 	if (len > 0) {
 		this->data = new T[len];
 	} else {
-		this->data = NULL;
+		this->data = nullptr;
 	}
 }
 
 template<typename T>
 Vector<T>::Vector(Vector<T> &vec) {
-	this->len = vec.size();
-	if (this->len > 0) {
-		this->data = new T[this->len];
-		for (size_t i = 0; i < this->len; i++) {
+	this->length = vec.size();
+	if (this->length > 0) {
+		this->data = new T[this->length];
+		for (size_t i = 0; i < this->length; i++) {
 			this->data[i] = vec[i];
 		}
 	} else {
-		this->data = NULL;
+		this->data = nullptr;
 	}
 }
 
 template<typename T>
 Vector<T>::Vector(const Vector<T> &vec) {
-	this->len = vec.size();
-	if (this->len > 0) {
-		this->data = new T[this->len];
-		for (size_t i = 0; i < this->len; i++) {
+	this->length = vec.size();
+	if (this->length > 0) {
+		this->data = new T[this->length];
+		for (size_t i = 0; i < this->length; i++) {
 			this->data[i] = vec[i];
 		}
 	} else {
-		this->data = NULL;
+		this->data = nullptr;
 	}
 }
 
 template<typename T>
 Vector<T> &Vector<T>::operator=(Vector<T> &vec) {
-	if (vec.size() != this->len) {
+	if (vec.size() != this->length) {
 		delete[] this->data;
-		this->len = vec.size();
-		this->data = new T[this->len];
+		this->length = vec.size();
+		this->data = new T[this->length];
 	}
 
-	for (size_t i = 0; i < this->len; i++) {
+	for (size_t i = 0; i < this->length; i++) {
 		this->data[i] = vec[i];
 	}
 
@@ -83,13 +83,13 @@ Vector<T> &Vector<T>::operator=(Vector<T> &vec) {
 
 template<typename T>
 Vector<T> &Vector<T>::operator=(const Vector<T> &vec) {
-	if (vec.size() != this->len) {
+	if (vec.size() != this->length) {
 		delete[] this->data;
-		this->len = vec.size();
-		this->data = new T[this->len];
+		this->length = vec.size();
+		this->data = new T[this->length];
 	}
 
-	for (size_t i = 0; i < this->len; i++) {
+	for (size_t i = 0; i < this->length; i++) {
 		this->data[i] = vec[i];
 	}
 
@@ -98,36 +98,36 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &vec) {
 
 template<typename T>
 size_t Vector<T>::size() const {
-	return this->len;
+	return this->length;
 }
 
 template<typename T>
 T &Vector<T>::operator[](size_t i) {
-	if (i >= this->len) {
+	if (i >= this->length) {
 		throw std::out_of_range("index is out of bounds");
 	}
 	return this->data[i];
 }
 
 template<typename T>
-void Vector<T>::append(T data) {
+void Vector<T>::append(T d) {
 	T *backup = this->data;
-	this->data = new T[this->len + 1];
-	for (size_t i = 0; i < this->len; i++) {
+	this->data = new T[this->length + 1];
+	for (size_t i = 0; i < this->length; i++) {
 		this->data[i] = backup[i];
 	}
-	this->data[this->len] = data;
-	if (this->len != 0) {
+	this->data[this->length] = d;
+	if (this->length != 0) {
 		delete[] backup;
 	}
-	this->len++;
+	this->length++;
 }
 
 template<typename T>
 void Vector<T>::clean() {
-	if (this->len != 0) {
+	if (this->length != 0) {
 		delete[] this->data;
-		this->len = 0;
+		this->length = 0;
 	}
 }
 
@@ -138,4 +138,4 @@ Vector<T>::~Vector() {
 
 }
 
-#endif // __VECTOR_HPP__
+#endif // VECTOR_HPP

@@ -1,5 +1,5 @@
-#ifndef __INSTRUCTION_SET_H__
-#define __INSTRUCTION_SET_H__
+#ifndef INSTRUCTION_SET_H
+#define INSTRUCTION_SET_H
 
 #include <stddef.h>
 
@@ -10,7 +10,7 @@
 	class name : public Instruction { \
 		name(size_t opcode, vector::Vector<Operand *> &operands) : \
 				Instruction(opcode, operands) {} \
-		void operator()(Register *registers = NULL); \
+		void operator()(Register *registers = nullptr); \
 	}; \
 	void name::operator()(Register *registers)
 
@@ -22,4 +22,4 @@ const size_t exit_opcode(1);
 
 #undef INSTRUCTION
 
-#endif // __INSTRUCTION_SET_H__
+#endif // INSTRUCTION_SET_H

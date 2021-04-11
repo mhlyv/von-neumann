@@ -1,8 +1,8 @@
-#ifndef __REGISTER_H__
-#define __REGISTER_H__
+#ifndef REGISTER_H
+#define REGISTER_H
 
 #include "memory/memory.h"
 
 typedef memory::Data Register;
 
-#endif // __REGISTER_H__
+#endif // REGISTER_H

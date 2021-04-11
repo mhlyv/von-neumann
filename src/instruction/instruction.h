@@ -1,5 +1,5 @@
-#ifndef __INSTRUCTION_H__
-#define __INSTRUCTION_H__
+#ifndef INSTRUCTION_H
+#define INSTRUCTION_H
 
 #include <stddef.h>
 
@@ -28,4 +28,4 @@ public:
 
 }
 
-#endif // __INSTRUCTION_H__
+#endif // INSTRUCTION_H

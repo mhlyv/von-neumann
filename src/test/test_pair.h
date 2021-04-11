@@ -1,5 +1,5 @@
-#ifndef __TEST_PAIR_H__
-#define __TEST_PAIR_H__
+#ifndef TEST_PAIR_H
+#define TEST_PAIR_H
 
 namespace test {
 
@@ -7,4 +7,4 @@ void test_pair();
 
 }
 
-#endif // __TEST_PAIR_H__
+#endif // TEST_PAIR_H

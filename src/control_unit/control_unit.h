@@ -1,5 +1,5 @@
-#ifndef __CONTROL_UNIT_H__
-#define __CONTROL_UNIT_H__
+#ifndef CONTROL_UNIT_H
+#define CONTROL_UNIT_H
 
 #include <stddef.h>
 
@@ -22,4 +22,4 @@ public:
 
 }
 
-#endif // __CONTROL_UNIT_H__
+#endif // CONTROL_UNIT_H

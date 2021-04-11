@@ -1,5 +1,5 @@
-#ifndef __TEST_PROCESSING_UNIT_H__
-#define __TEST_PROCESSING_UNIT_H__
+#ifndef TEST_PROCESSING_UNIT_H
+#define TEST_PROCESSING_UNIT_H
 
 namespace test {
 
@@ -7,4 +7,4 @@ void test_processing_unit();
 
 }
 
-#endif // __TEST_PROCESSING_UNIT_H__
+#endif // TEST_PROCESSING_UNIT_H

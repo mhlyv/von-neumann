@@ -1,5 +1,5 @@
-#ifndef __MEMORY_H__
-#define __MEMORY_H__
+#ifndef MEMORY_H
+#define MEMORY_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -17,7 +17,7 @@ public:
 	uint64_t read() const;
 	void write(uint64_t data);
 	virtual void write(Data *data);
-	virtual Data *clone() const;
+	virtual Data *clone();
 	virtual ~Data();
 
 	// assignment
@@ -109,4 +109,4 @@ public:
 
 }
 
-#endif // __MEMORY_H__
+#endif // MEMORY_H

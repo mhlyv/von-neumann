@@ -1,5 +1,5 @@
-#ifndef __CPU_H__
-#define __CPU_H__
+#ifndef CPU_H
+#define CPU_H
 
 #include <stddef.h>
 
@@ -21,4 +21,4 @@ public:
 
 }
 
-#endif // __CPU_H__
+#endif // CPU_H

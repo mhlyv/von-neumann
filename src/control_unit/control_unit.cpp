@@ -7,7 +7,7 @@
 namespace cu {
 
 ControlUnit::ControlUnit(memory::Data &pc) :
-	instruction_register(NULL), program_counter(pc) {
+	instruction_register(nullptr), program_counter(pc) {
 }
 
 void ControlUnit::fetch(memory::Memory &mem) {
@@ -21,7 +21,7 @@ inst::Instruction &ControlUnit::instruction() {
 }
 
 void ControlUnit::reset() {
-	this->instruction_register = NULL;
+	this->instruction_register = nullptr;
 	this->program_counter = 0;
 }
 

@@ -45,7 +45,7 @@ static void ParseArgs(int argc, const char **argv) {
 		} else if (std::strcmp(argv[i], "--memory") == 0) {
 			ParseMemorySize(argc - i, argv + i);
 			i++; // Skip the number
-		} else if (config::filename == NULL) {
+		} else if (config::filename == nullptr) {
 			// This should be the last option after all other flags
 			TryFileName(argv[i]);
 		} else {
@@ -57,7 +57,7 @@ static void ParseArgs(int argc, const char **argv) {
 		}
 	}
 
-	if (config::filename == NULL) {
+	if (config::filename == nullptr) {
 		throw std::invalid_argument("No file name provided");
 	}
 }
