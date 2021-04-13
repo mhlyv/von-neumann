@@ -9,92 +9,20 @@
 namespace memory {
 
 class Data {
+public:
+	typedef uint64_t data_t;
 private:
-	uint64_t data;
+	data_t data;
 public:
 	Data();
-	Data(uint64_t data);
-	uint64_t read() const;
-	void write(uint64_t data);
+	Data(data_t data);
+	data_t read() const;
+	void write(data_t data);
+	operator data_t&();
+	operator data_t() const;
 	virtual void write(Data *data);
 	virtual Data *clone();
 	virtual ~Data();
-
-	// assignment
-	Data &operator%=(const Data &d);
-	Data &operator%=(uint64_t data);
-	Data &operator&=(const Data &d);
-	Data &operator&=(uint64_t data);
-	Data &operator*=(const Data &d);
-	Data &operator*=(uint64_t data);
-	Data &operator+=(const Data &d);
-	Data &operator+=(uint64_t data);
-	Data &operator-=(const Data &d);
-	Data &operator-=(uint64_t data);
-	Data &operator/=(const Data &d);
-	Data &operator/=(uint64_t data);
-	Data &operator<<=(const Data &d);
-	Data &operator<<=(uint64_t data);
-	Data &operator=(const Data &d);
-	Data &operator=(uint64_t data);
-	Data &operator>>=(const Data &d);
-	Data &operator>>=(uint64_t data);
-	Data &operator^=(const Data &d);
-	Data &operator^=(uint64_t data);
-	Data &operator|=(const Data &d);
-	Data &operator|=(uint64_t data);
-
-	// increment, decrement
-	Data &operator++();
-	Data operator++(int n);
-	Data &operator--();
-	Data operator--(int n);
-
-	// artihmetic
-	Data operator%(const Data &d) const;
-	Data operator%(uint64_t data) const;
-	Data operator&(const Data &d) const;
-	Data operator&(uint64_t data) const;
-	Data operator*(const Data &d) const;
-	Data operator*(uint64_t data) const;
-	Data operator+() const;
-	Data operator+(const Data &d) const;
-	Data operator+(uint64_t data) const;
-	Data operator-() const;
-	Data operator-(const Data &d) const;
-	Data operator-(uint64_t data) const;
-	Data operator/(const Data &d) const;
-	Data operator/(uint64_t data) const;
-	Data operator<<(const Data &d) const;
-	Data operator<<(uint64_t data) const;
-	Data operator>>(const Data &d) const;
-	Data operator>>(uint64_t data) const;
-	Data operator^(const Data &d) const;
-	Data operator^(uint64_t data) const;
-	Data operator|(const Data &d) const;
-	Data operator|(uint64_t data) const;
-	Data operator~() const;
-
-	// logical
-	bool operator!() const;
-	bool operator&&(const Data &d) const;
-	bool operator&&(uint64_t data) const;
-	bool operator||(const Data &d) const;
-	bool operator||(uint64_t data) const;
-
-	// comparison
-	bool operator!=(const Data &d) const;
-	bool operator!=(uint64_t data) const;
-	bool operator<(const Data &d) const;
-	bool operator<(uint64_t data) const;
-	bool operator<=(const Data &d) const;
-	bool operator<=(uint64_t data) const;
-	bool operator==(const Data &d) const;
-	bool operator==(uint64_t data) const;
-	bool operator>(const Data &d) const;
-	bool operator>(uint64_t data) const;
-	bool operator>=(const Data &d) const;
-	bool operator>=(uint64_t data) const;
 };
 
 class Memory {

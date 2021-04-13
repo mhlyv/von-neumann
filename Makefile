@@ -10,3 +10,6 @@ clean:
 .PHONY:
 run: all
 	./bin/neumann
+
+test: all
+	./bin/test_neumann

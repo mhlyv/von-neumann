@@ -32,8 +32,8 @@ void test_data_clone() {
 }
 
 void test_data_assignment() {
-	uint64_t u1 = 42;
-	uint64_t u2 = 13;
+	memory::Data::data_t u1 = 42;
+	memory::Data::data_t u2 = 13;
 	memory::Data d1 = u1;
 	memory::Data d2;
 
@@ -114,7 +114,7 @@ void test_data_assignment() {
 }
 
 void test_data_inc_dec() {
-	uint64_t u = 42;
+	memory::Data::data_t u = 42;
 	memory::Data d;
 
 	d = u;
@@ -133,8 +133,8 @@ void test_data_inc_dec() {
 }
 
 void test_data_arithmetic() {
-	uint64_t u1 = 42;
-	uint64_t u2 = 1000;
+	memory::Data::data_t u1 = 42;
+	memory::Data::data_t u2 = 64;
 
 	assert((memory::Data(u1) % memory::Data(u2))  == (u1 % u2));
 	assert((memory::Data(u1) % u2)                == (u1 % u2));
@@ -154,11 +154,16 @@ void test_data_arithmetic() {
 	assert((memory::Data(u1) / memory::Data(u2))  == (u1 / u2));
 	assert((memory::Data(u1) / u2)                == (u1 / u2));
 
-	assert((memory::Data(u1) << memory::Data(u2)) == (u1 << u2));
-	assert((memory::Data(u1) << u2)               == (u1 << u2));
+	if (sizeof(memory::Data::data_t)*8 > u2) {
+		// this causes undefined behaviour ...
+		// thank you g++, very cool
+		assert((memory::Data(u1) << memory::Data(u2)) == (u1 << u2));
+		assert((memory::Data(u1) << u2)               == (u1 << u2));
 
-	assert((memory::Data(u1) >> memory::Data(u2)) == (u1 >> u2));
-	assert((memory::Data(u1) >> u2)               == (u1 >> u2));
+		assert((memory::Data(u1) >> memory::Data(u2)) == (u1 >> u2));
+		assert((memory::Data(u1) >> u2)               == (u1 >> u2));
+	}
+
 
 	assert((memory::Data(u1) ^ memory::Data(u2))  == (u1 ^ u2));
 	assert((memory::Data(u1) ^ u2)                == (u1 ^ u2));
@@ -174,8 +179,8 @@ void test_data_arithmetic() {
 }
 
 void test_data_logical() {
-	uint64_t u1 = 42; // MUST BE NON ZERO
-	uint64_t u2 = 13; // MUST BE NON ZERO
+	memory::Data::data_t u1 = 42; // MUST BE NON ZERO
+	memory::Data::data_t u2 = 13; // MUST BE NON ZERO
 	assert(!memory::Data(u1)                      == false);
 	assert((memory::Data(u1) && memory::Data(u2)) == true);
 	assert((memory::Data(0)  && memory::Data(u2)) == false);
@@ -190,8 +195,8 @@ void test_data_logical() {
 }
 
 void test_data_comparison() {
-	uint64_t u1 = 42;
-	uint64_t u2 = 13;
+	memory::Data::data_t u1 = 42;
+	memory::Data::data_t u2 = 13;
 
 	assert((memory::Data(u1) != memory::Data(u2)) == (u1 != u2));
 	assert((memory::Data(u1) != u2)               == (u1 != u2));
