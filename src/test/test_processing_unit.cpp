@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "memory/memory.h"
 #include "instruction/instruction.h"
 #include "processing_unit/processing_unit.h"
 #include "processing_unit/register.h"
@@ -24,7 +25,7 @@ namespace processing_unit_constructor {
 size_t regs = 42;
 
 INSTRUCTION(test_inst) {
-	uint64_t val;
+	memory::Data::data_t val;
 	for (size_t i = 0; i < regs; i++) {
 		try {
 			val = registers[i].read();
