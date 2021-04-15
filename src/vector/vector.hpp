@@ -12,6 +12,7 @@ private:
 	size_t length;
 	T *data;
 public:
+	typedef T* iterator;
 	Vector();
 	Vector(size_t len);
 	Vector(Vector<T> &vec);
@@ -20,6 +21,8 @@ public:
 	Vector<T> &operator=(const Vector<T> &vec);
 	size_t size() const;
 	T& operator[](size_t i);
+	iterator begin();
+	iterator end();
 	void append(T d);
 	void clean();
 	~Vector();
@@ -107,6 +110,16 @@ T &Vector<T>::operator[](size_t i) {
 		throw std::out_of_range("index is out of bounds");
 	}
 	return this->data[i];
+}
+
+template<typename T>
+typename Vector<T>::iterator Vector<T>::begin() {
+	return this->data;
+}
+
+template<typename T>
+typename Vector<T>::iterator Vector<T>::end() {
+	return this->data + this->length;
 }
 
 template<typename T>
