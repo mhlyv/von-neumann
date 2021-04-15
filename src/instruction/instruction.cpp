@@ -9,6 +9,17 @@
 
 namespace inst {
 
+Operand::Operand() : pair::Pair<memory::Data *, bool>() {
+}
+
+Operand::Operand(memory::Data *data, bool is_reg = false)
+	: pair::Pair<memory::Data *, bool>(data, is_reg) {
+}
+
+bool Operand::is_register() const {
+	return this->right();
+}
+
 Instruction::Instruction(size_t opcode,
 		vector::Vector<Operand *> &operands) :
 	memory::Data(opcode), operands(operands) {
