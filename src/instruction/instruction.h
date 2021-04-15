@@ -15,8 +15,10 @@ public:
 	Operand();
 	Operand(memory::Data *data, bool is_reg);
 	bool is_register() const;
+	Operand &operator=(memory::Data &d);
 	operator memory::Data::data_t&();
 	operator memory::Data::data_t() const;
+	operator memory::Data*();
 	operator memory::Data&();
 	operator memory::Data() const;
 };

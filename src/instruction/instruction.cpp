@@ -19,12 +19,22 @@ Operand::Operand(memory::Data *data, bool is_reg = false)
 bool Operand::is_register() const {
 	return this->right();
 }
+
+Operand &Operand::operator=(memory::Data &d) {
+	*this->left() = d;
+	return *this;
+}
+
 Operand::operator memory::Data::data_t&() {
 	return *this->left();
 }
 
 Operand::operator memory::Data::data_t() const {
 	return *this->left();
+}
+
+Operand::operator memory::Data*() {
+	return this->left();
 }
 
 Operand::operator memory::Data&() {
