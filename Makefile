@@ -12,12 +12,4 @@ release:
 
 .PHONY:
 clean:
-	rm -rf bin
 	rm -rf build
-
-.PHONY:
-run: all
-	./bin/neumann
-
-test: debug
-	./bin/test_neumann
