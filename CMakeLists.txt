@@ -1,8 +1,19 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(neumann CXX)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2 -g")
+
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE "Debug")
+endif(NOT CMAKE_BUILD_TYPE)
+
+set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
+set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -g")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+
 set(EXECUTABLE_OUTPUT_PATH       ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${EXECUTABLE_OUTPUT_PATH}/debug)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${EXECUTABLE_OUTPUT_PATH}/release)
+
 set(ARCHIVE_OUTPUT_DIRECTORY     ${CMAKE_SOURCE_DIR}/lib)
 set(LIBRARY_OUTPUT_DIRECTORY     ${CMAKE_SOURCE_DIR}/lib)
 set(PROJECT_SOURCE_DIR           ${CMAKE_SOURCE_DIR}/src)
@@ -154,20 +165,22 @@ target_include_directories(neumann
 )
 
 # TEST
-add_executable(test_neumann
-	${SRC_test}
-	${SRC_vector}
-	${SRC_pair}
-)
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+	add_executable(test_neumann
+		${SRC_test}
+		${SRC_vector}
+		${SRC_pair}
+	)
 
-target_link_libraries(test_neumann
-	memory
-	instruction
-	control_unit
-	processing_unit
-	cpu
-)
+	target_link_libraries(test_neumann
+		memory
+		instruction
+		control_unit
+		processing_unit
+		cpu
+	)
 
-target_include_directories(test_neumann
-	PUBLIC ${PROJECT_SOURCE_DIR}
-)
+	target_include_directories(test_neumann
+		PUBLIC ${PROJECT_SOURCE_DIR}
+	)
+endif(CMAKE_BUILD_TYPE MATCHES "Debug")
