@@ -19,9 +19,24 @@ Operand::Operand(memory::Data *data, bool is_reg = false)
 bool Operand::is_register() const {
 	return this->right();
 }
+Operand::operator memory::Data::data_t&() {
+	return *this->left();
+}
+
+Operand::operator memory::Data::data_t() const {
+	return *this->left();
+}
+
+Operand::operator memory::Data&() {
+	return *this->left();
+}
+
+Operand::operator memory::Data() const {
+	return *this->left();
+}
 
 Instruction::Instruction(size_t opcode,
-		vector::Vector<Operand *> &operands) :
+		vector::Vector<Operand> &operands) :
 	memory::Data(opcode), operands(operands) {
 }
 
@@ -34,7 +49,7 @@ Operand &Instruction::operator[](size_t i) {
 		throw std::out_of_range("Index out of range");
 	}
 
-	return *(this->operands[i]);
+	return this->operands[i];
 }
 
 void Instruction::write(memory::Data *data) {
@@ -44,7 +59,7 @@ void Instruction::write(memory::Data *data) {
 	this->operands.clean();
 
 	for (size_t i = 0; i < inst->n_operands(); i++) {
-		this->operands.append(&(*inst)[i]);
+		this->operands.append((*inst)[i]);
 	}
 }
 

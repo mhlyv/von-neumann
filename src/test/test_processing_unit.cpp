@@ -12,7 +12,7 @@
 #define INSTRUCTION(name) \
 	class name : public inst::Instruction { \
 		public: \
-			name(size_t opcode, vector::Vector<inst::Operand *> &operands) : \
+			name(size_t opcode, vector::Vector<inst::Operand> &operands) : \
 					Instruction(opcode, operands) {} \
 			void operator()(vector::Vector<Register> &registers); \
 	}; \
@@ -45,7 +45,7 @@ INSTRUCTION(test_inst) {
 
 void test() {
 	pu::ProcessingUnit pu(regs);
-	vector::Vector<inst::Operand *> vec;
+	vector::Vector<inst::Operand> vec;
 	test_inst i(0, vec);
 	pu.eval(i);
 }
@@ -70,7 +70,7 @@ INSTRUCTION(test_set) {
 
 void test() {
 	pu::ProcessingUnit pu(regs);
-	vector::Vector<inst::Operand *> vec;
+	vector::Vector<inst::Operand> vec;
 
 	set s(0, vec);
 	pu.eval(s);

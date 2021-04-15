@@ -15,14 +15,18 @@ public:
 	Operand();
 	Operand(memory::Data *data, bool is_reg);
 	bool is_register() const;
+	operator memory::Data::data_t&();
+	operator memory::Data::data_t() const;
+	operator memory::Data&();
+	operator memory::Data() const;
 };
 
 class Instruction : public memory::Data {
 protected:
 	// the boolean is true if the operand is a register, otherwise false
-	vector::Vector<Operand *> operands;
+	vector::Vector<Operand> operands;
 public:
-	Instruction(size_t opcode, vector::Vector<Operand *> &operands);
+	Instruction(size_t opcode, vector::Vector<Operand> &operands);
 	size_t n_operands() const;
 	Operand &operator[](size_t i);
 	void write(memory::Data *data);

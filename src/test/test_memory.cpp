@@ -19,8 +19,8 @@ void test_memory_constructor() {
 void test_memory_storage() {
 	memory::Memory m(1000);
 	memory::Data *dp = new memory::Data(42);
-	inst::Operand *operand = new inst::Operand(new memory::Data(1234), false);
-	vector::Vector<inst::Operand *> operands;
+	inst::Operand operand = inst::Operand(new memory::Data(1234), false);
+	vector::Vector<inst::Operand> operands;
 
 	operands.append(operand);
 	inst::Instruction *inst = new inst::Instruction(13, operands);
@@ -39,8 +39,8 @@ void test_memory_storage() {
 			assert(tmp->read() == 13);
 			assert(tmp->n_operands() == inst->n_operands());
 			for (size_t j = 0; j < operands.size(); j++) {
-				assert((*tmp)[j].left()->read() == operands[j]->left()->read());
-				assert((*tmp)[j] == *operands[j]);
+				assert((*tmp)[j].left()->read() == operands[j].left()->read());
+				assert((*tmp)[j] == operands[j]);
 			}
 
 			vector::Vector<Register> regs;
@@ -50,8 +50,8 @@ void test_memory_storage() {
 		}
 	}
 
-	delete operand->left();
-	delete operand;
+	delete operand.left();
+	// delete operand;
 	delete inst;
 	delete dp;
 }
