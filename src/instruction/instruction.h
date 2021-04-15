@@ -10,7 +10,12 @@
 
 namespace inst {
 
-typedef pair::Pair<memory::Data *, bool> Operand;
+class Operand : public pair::Pair<memory::Data *, bool> {
+public:
+	Operand();
+	Operand(memory::Data *data, bool is_reg);
+	bool is_register() const;
+};
 
 class Instruction : public memory::Data {
 protected:
