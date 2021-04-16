@@ -2,13 +2,13 @@ all: debug
 
 .PHONY:
 debug:
-	cmake . -B build -G Ninja
-	ninja -C build
+	cmake . -B build/debug -G Ninja
+	ninja -C build/debug
 
 .PHONY:
 release:
-	cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-	ninja -C build
+	cmake . -B build/release -G Ninja -DCMAKE_BUILD_TYPE=Release
+	ninja -C build/release
 
 .PHONY:
 clean:
