@@ -27,6 +27,7 @@ public:
 	void append(T d);
 	void clean();
 	virtual bool operator==(const Vector<T> &vec) const;
+	virtual bool operator!=(const Vector<T> &vec) const;
 	virtual ~Vector();
 };
 
@@ -167,6 +168,11 @@ bool Vector<T>::operator==(const Vector<T> &vec) const {
 	}
 
 	return true;
+}
+
+template<typename T>
+bool Vector<T>::operator!=(const Vector<T> &vec) const {
+	return !(*this == vec);
 }
 
 template<typename T>

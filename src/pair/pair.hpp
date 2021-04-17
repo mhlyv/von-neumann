@@ -31,12 +31,6 @@ public:
 		return this->right_val;
 	}
 
-	Pair<L, R> &operator=(Pair<L, R> &p) {
-		this->left_val = p.left();
-		this->right_val = p.right();
-		return *this;
-	}
-
 	bool operator==(Pair<L, R> &p) {
 		return p.left() == this->left_val && p.right() == this->right_val;
 	}
