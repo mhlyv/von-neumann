@@ -4,6 +4,7 @@
 
 #include "lang/token.h"
 #include "lang/tokenizer.h"
+#include "pair/pair.hpp"
 #include "vector/vector.hpp"
 
 namespace lang {
@@ -62,7 +63,7 @@ Tokenizer::Tokenizer(const char *filename) : ifs(filename), line() {
 	if (!this->ifs.is_open()) {
 		throw std::invalid_argument("Couldn't open file!");
 	}
-	this->nth_line = 0;
+	this->line.left() = 0;
 }
 
 Token Tokenizer::next_token() {
@@ -92,28 +93,29 @@ Token Tokenizer::next_token() {
 	return Token(this->buffer);
 }
 
-vector::Vector<Token> &Tokenizer::next_line() {
+Tokenizer::Line &Tokenizer::next_line() {
 	Token tok;
 
 	if (!this->ifs.is_open()) {
-		this->line.clean();
+		this->line.left() = 0;
+		this->line.right().clean();
 		return this->line;
 	}
 
 	do {
-		this->nth_line++;
-		this->line.clean();
+		this->line.left()++;
+		this->line.right().clean();
 		tok = this->next_token();
 
 		while (tok != "\n") {
-			this->line.append(tok);
+			this->line.right().append(tok);
 			tok = this->next_token();
 		}
 
 		if (this->ifs.peek() == EOF) {
 			this->ifs.close();
 		}
-	} while (this->line.size() == 0 && this->ifs.is_open()); // skip 'empty' lines
+	} while (this->line.right().size() == 0 && this->ifs.is_open()); // skip 'empty' lines
 
 	return this->line;
 }
