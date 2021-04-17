@@ -17,15 +17,17 @@ public:
 	Vector(size_t len);
 	Vector(Vector<T> &vec);
 	Vector(const Vector<T> &vec);
+	size_t size() const;
 	Vector<T> &operator=(Vector<T> &vec);
 	Vector<T> &operator=(const Vector<T> &vec);
-	size_t size() const;
 	T& operator[](size_t i);
+	const T& operator[](size_t i) const;
 	iterator begin();
 	iterator end();
 	void append(T d);
 	void clean();
-	~Vector();
+	virtual bool operator==(const Vector<T> &vec) const;
+	virtual ~Vector();
 };
 
 template<typename T>
@@ -113,6 +115,14 @@ T &Vector<T>::operator[](size_t i) {
 }
 
 template<typename T>
+const T &Vector<T>::operator[](size_t i) const {
+	if (i >= this->length) {
+		throw std::out_of_range("index is out of bounds");
+	}
+	return this->data[i];
+}
+
+template<typename T>
 typename Vector<T>::iterator Vector<T>::begin() {
 	return this->data;
 }
@@ -142,6 +152,21 @@ void Vector<T>::clean() {
 		delete[] this->data;
 		this->length = 0;
 	}
+}
+
+template<typename T>
+bool Vector<T>::operator==(const Vector<T> &vec) const {
+	if (this->length != vec.size()) {
+		return false;
+	} else {
+		for (size_t i = 0; i < this->length; i++) {
+			if (this->data[i] != vec[i]) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 template<typename T>
