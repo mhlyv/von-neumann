@@ -5,6 +5,8 @@
 #include "test/test_pair.h"
 #include "test/test_processing_unit.h"
 #include "test/test_vector.h"
+#include "test/test_token.h"
+#include "test/test_tokenizer.h"
 
 int main() {
 	std::cout << "There should be no output (except this)." << std::endl;
@@ -13,4 +15,6 @@ int main() {
 	test::test_memory();
 	test::test_pair();
 	test::test_processing_unit();
+	test::test_token();
+	test::test_tokenizer();
 }

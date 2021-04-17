@@ -65,6 +65,12 @@ file(GLOB SRC_cpu
 	${PROJECT_SOURCE_DIR}/cpu/*.hpp
 )
 
+file(GLOB SRC_lang
+	${PROJECT_SOURCE_DIR}/lang/*.cpp
+	${PROJECT_SOURCE_DIR}/lang/*.h
+	${PROJECT_SOURCE_DIR}/lang/*.hpp
+)
+
 # MEMORY
 add_library(memory
 	${SRC_memory}
@@ -87,6 +93,16 @@ target_link_libraries(instruction
 )
 
 target_include_directories(instruction
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
+# LANG
+add_library(lang
+ 	${SRC_lang}
+ 	${SRC_vector}
+)
+
+target_include_directories(lang
 	PUBLIC ${PROJECT_SOURCE_DIR}
 )
 
@@ -147,6 +163,7 @@ target_link_libraries(neumann
 	control_unit
 	processing_unit
 	cpu
+	lang
 )
 
 target_include_directories(neumann
@@ -167,6 +184,7 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
 		control_unit
 		processing_unit
 		cpu
+		lang
 	)
 
 	target_include_directories(test_neumann
