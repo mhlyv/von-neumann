@@ -77,7 +77,9 @@ Vector<T> &Vector<T>::operator=(Vector<T> &vec) {
 	if (vec.size() != this->length) {
 		delete[] this->data;
 		this->length = vec.size();
-		this->data = new T[this->length];
+		if (this->length != 0) {
+			this->data = new T[this->length];
+		}
 	}
 
 	for (size_t i = 0; i < this->length; i++) {
@@ -92,7 +94,9 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &vec) {
 	if (vec.size() != this->length) {
 		delete[] this->data;
 		this->length = vec.size();
-		this->data = new T[this->length];
+		if (this->length != 0) {
+			this->data = new T[this->length];
+		}
 	}
 
 	for (size_t i = 0; i < this->length; i++) {
