@@ -8,6 +8,17 @@
 
 namespace lang {
 
+bool Tokenizer::important(char c) const {
+	const char *chars = "\n:,;";
+	while (*chars != '\0') {
+		if (*chars == c) {
+			return true;
+		}
+		chars++;
+	}
+	return false;
+}
+
 bool Tokenizer::skip_whitespace() {
 	char in;
 	bool has_skipped = false;
@@ -18,7 +29,7 @@ bool Tokenizer::skip_whitespace() {
 
 	// don't skip newlines
 	while (this->ifs.peek() && isspace(this->ifs.peek()) &&
-			this->ifs.peek() != '\n') {
+			!this->important(this->ifs.peek())) {
 		this->ifs.get(in);
 		has_skipped = true;
 	}
@@ -38,6 +49,7 @@ bool Tokenizer::skip_comment() {
 	
 	if (this->ifs.peek() == ';') {
 		has_skipped = true;
+		// skip until end of line
 		while (this->ifs.peek() && this->ifs.peek() != '\n') {
 			this->ifs.get(in);
 		}
@@ -63,12 +75,13 @@ Token Tokenizer::next_token() {
 
 	this->skip_comment();
 
-	if (this->ifs.peek() == '\n') {
+	if (this->important(this->ifs.peek())) {
 		this->ifs.get(in);
 		this->buffer[read] = in;
 		read++;
 	} else {
-		while (!isspace(this->ifs.peek())) {
+		while (!isspace(this->ifs.peek()) &&
+				!this->important(this->ifs.peek())) {
 			this->ifs.get(in);
 			this->buffer[read] = in;
 			read++;

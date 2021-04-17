@@ -15,6 +15,7 @@ private:
 	vector::Vector<Token> line;
 	static const size_t max_token_size = 64;
 	size_t nth_line;
+	bool important(char c) const;
 	char buffer[max_token_size];
 	bool skip_whitespace();
 	bool skip_comment();
