@@ -13,6 +13,7 @@ private:
 	T *data;
 public:
 	typedef T* iterator;
+	typedef const T* const_iterator;
 	Vector();
 	Vector(size_t len);
 	Vector(Vector<T> &vec);
@@ -24,6 +25,8 @@ public:
 	const T& operator[](size_t i) const;
 	iterator begin();
 	iterator end();
+	const_iterator cbegin() const;
+	const_iterator cend() const;
 	void append(T d);
 	void clean();
 	virtual bool operator==(const Vector<T> &vec) const;
@@ -134,6 +137,16 @@ typename Vector<T>::iterator Vector<T>::begin() {
 
 template<typename T>
 typename Vector<T>::iterator Vector<T>::end() {
+	return this->data + this->length;
+}
+
+template<typename T>
+typename Vector<T>::const_iterator Vector<T>::cbegin() const {
+	return this->data;
+}
+
+template<typename T>
+typename Vector<T>::const_iterator Vector<T>::cend() const {
 	return this->data + this->length;
 }
 
