@@ -4,6 +4,7 @@
 #include <exception>
 #include <stddef.h>
 #include <sstream>
+#include <string.h>
 
 #include "lang/token.h"
 #include "lang/tokenizer.h"
@@ -42,27 +43,35 @@ typedef vector::Vector<
 
 class syntax_error : public std::exception {
 private:
-	std::ostringstream oss;
+	char *str;
 public:
 	syntax_error(Tokenizer::Line &line, const char *msg) : std::exception() {
-			this->oss << "Syntax error on line " << line.left() << " :\n";
+		std::ostringstream oss;
+		oss << "Syntax error on line " << line.left() << " :\n";
 
-			// add the line of code
-			for (size_t i = 0; i < line.right().size(); i++) {
-				for (char &c : line.right()[i]) {
-					if (c == '\0') {
-						oss << ' ';
-					} else {
-						oss << c;
-					}
+		// add the line of code
+		for (size_t i = 0; i < line.right().size(); i++) {
+			for (char &c : line.right()[i]) {
+				if (c == '\0') {
+					oss << ' ';
+				} else {
+					oss << c;
 				}
 			}
+		}
 
-			// add message
-			oss << "\n\t" << msg;
+		// add message
+		oss << "\n\t" << msg;
+		this->str = new char[oss.str().size() + 1];
+		strncpy(this->str,
+				oss.str().c_str(),
+				oss.str().size());
 	}
 	const char *what() const throw() {
-		return this->oss.str().c_str();
+		return this->str;
+	}
+	virtual ~syntax_error() {
+		delete[] this->str;
 	}
 };
 
