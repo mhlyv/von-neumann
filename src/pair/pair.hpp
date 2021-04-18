@@ -31,8 +31,12 @@ public:
 		return this->right_val;
 	}
 
-	bool operator==(Pair<L, R> &p) {
+	bool operator==(const Pair<L, R> &p) const {
 		return p.left() == this->left_val && p.right() == this->right_val;
+	}
+
+	bool operator!=(const Pair<L, R> &p) const {
+		return !(*this == p);
 	}
 };
 
