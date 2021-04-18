@@ -115,8 +115,13 @@ Tokenizer::Line &Tokenizer::next_line() {
 		if (this->ifs.peek() == EOF) {
 			this->ifs.close();
 		}
-	} while (this->line.right().size() == 0 && this->ifs.is_open()); // skip 'empty' lines
+		// skip 'empty' lines
+	} while (this->line.right().size() == 0 && this->ifs.is_open());
 
+	return this->line;
+}
+
+Tokenizer::Line &Tokenizer::get_line() {
 	return this->line;
 }
 

@@ -26,6 +26,7 @@ public:
 	Tokenizer(const char *filename);
 	Token next_token();
 	Line &next_line();
+	Line &get_line();
 	~Tokenizer();
 };
 
