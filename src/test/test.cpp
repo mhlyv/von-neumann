@@ -7,6 +7,7 @@
 #include "test/test_vector.h"
 #include "test/test_token.h"
 #include "test/test_tokenizer.h"
+#include "test/test_parser.h"
 
 int main() {
 	std::cout << "There should be no output (except this)." << std::endl;
@@ -17,4 +18,5 @@ int main() {
 	test::test_processing_unit();
 	test::test_token();
 	test::test_tokenizer();
+	test::test_parser();
 }
