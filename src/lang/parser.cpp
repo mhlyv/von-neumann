@@ -83,23 +83,7 @@ bool Parser::parse_section(Tokenizer &toker) {
 	} else if (line.right().size() != 2) {
 		throw syntax_error(line, "expected syntax: `section <section name>`");
 	} else {
-		pair::Pair<	// section
-			Token,	// name of section
-			pair::Pair<
-				vector::Vector<	// list of labels
-					pair::Pair<
-						Token,	// name of label
-						size_t	// number of instruction
-					>
-				>,
-				vector::Vector<	// list of instruction
-					pair::Pair<
-						Token,	// name of instruction
-						vector::Vector<Token> // arguments of instruction
-					>
-				>
-			>		
-		> new_section;
+		Section new_section;
 
 		new_section.left() = Token(line.right()[1]);
 
@@ -133,30 +117,28 @@ size_t Parser::write_to(memory::Memory &mem) const {
 
 void Parser::print() const {
 	// iterate sections
-	for (auto section = this->ast.cbegin();
+	for (const Section *section = this->ast.cbegin();
 			section != this->ast.cend(); ++section) {
-		std::cout << "section " << section->left().cbegin() << std::endl;
+		std::cout << "section " << section->left() << std::endl;
 
-		// iterate labels
-		for (size_t i = 0; i < section->right().left().size(); i++) {
-			std::cout << "\tlabel " <<
-				section->right().left()[i].left().cbegin() <<
-				": " << section->right().left()[i].right() <<
-				std::endl;
+		for (const Label *label = section->right().left().cbegin();
+				label != section->right().left().cend(); ++label) {
+			std::cout << "\tlabel " << label->left() <<
+				": " << label->right() << std::endl;
 		}
 
-		// iterate instruction
-		for (size_t i = 0; i < section->right().right().size(); i++) {
-			std::cout << "\t" << section->right().right()[i].left().cbegin();
-			std:: cout << "\t";
-			for (size_t j = 0; j < section->right().right()[i].right().size();
-					j++) {
-				std::cout << section->right().right()[i].right()[j].cbegin();
-				if (j + 1 != section->right().right()[i].right().size()) {
+		for (const Instruction *inst = section->right().right().cbegin();
+				inst != section->right().right().cend(); ++inst) {
+			std::cout << "\t" << inst->left() << "\t";
+
+			for (size_t i = 0; i < inst->right().size(); i++) {
+				std::cout << inst->right()[i];
+				if (i + 1 != inst->right().size()) {
 					std::cout << ", ";
 				}
 			}
-			std::cout << std::endl;
+
+		 	std::cout << std::endl;
 		}
 	}
 }

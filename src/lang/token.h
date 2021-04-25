@@ -1,7 +1,9 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include <iostream>
 #include <string.h>
+
 #include "vector/vector.hpp"
 
 namespace lang {
@@ -15,6 +17,8 @@ public:
 	bool operator==(const Token &tok) const;
 	bool operator!=(const Token &tok) const;
 };
+
+std::ostream &operator<<(std::ostream &os, const Token &tok);
 
 }
 

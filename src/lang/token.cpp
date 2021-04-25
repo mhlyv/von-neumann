@@ -1,5 +1,7 @@
+#include <iostream>
 #include <stddef.h>
 #include <string.h>
+
 #include "lang/token.h"
 
 namespace lang {
@@ -47,6 +49,10 @@ bool Token::operator==(const Token &tok) const {
 
 bool Token::operator!=(const Token &tok) const {
 	return !(*this == tok);
+}
+
+std::ostream &operator<<(std::ostream &os, const Token &tok) {
+	return os << tok.cbegin();
 }
 
 }

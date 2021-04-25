@@ -22,25 +22,30 @@ namespace lang {
 //     Instruction(name, operands...)
 //     ...
 
-typedef vector::Vector<
-	pair::Pair<	// section
-		Token,	// name of section
-		pair::Pair<
-			vector::Vector<	// list of labels
-				pair::Pair<
-					Token,	// name of label
-					size_t	// number of instruction
-				>
-			>,
-			vector::Vector<	// list of instruction
-				pair::Pair<
-					Token,	// name of instruction
-					vector::Vector<Token> // arguments of instruction
-				>
-			>
-		>		
-	>
-> AST;
+typedef pair::Pair<
+	Token,	// name of instruction
+	vector::Vector<Token> // arguments of instruction
+> Instruction;
+
+typedef pair::Pair<
+	Token, // name of label
+	size_t // nth instruction in section
+> Label;
+
+typedef pair::Pair<
+	Token,	// name of section
+	pair::Pair<
+		vector::Vector<	// list of labels
+			Label
+		>,
+		vector::Vector<	// list of instruction
+			Instruction
+		>
+	>		
+> Section;
+
+// ast is a list of sections
+typedef vector::Vector<Section> AST;
 
 class syntax_error : public std::exception {
 private:
