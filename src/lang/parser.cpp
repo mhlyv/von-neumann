@@ -4,6 +4,7 @@
 #include "lang/parser.h"
 #include "lang/token.h"
 #include "lang/tokenizer.h"
+#include "memory/memory.h"
 #include "pair/pair.hpp"
 #include "vector/vector.hpp"
 
@@ -122,6 +123,12 @@ void Parser::build_from(Tokenizer &toker) {
 
 void Parser::clean() {
 	ast.clean();
+}
+
+// return the number of instructions written to memory
+size_t Parser::write_to(memory::Memory &mem) const {
+	size_t written = 0;
+	return written;
 }
 
 void Parser::print() const {

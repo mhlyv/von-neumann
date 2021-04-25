@@ -8,6 +8,7 @@
 
 #include "lang/token.h"
 #include "lang/tokenizer.h"
+#include "memory/memory.h"
 #include "pair/pair.hpp"
 #include "vector/vector.hpp"
 
@@ -83,6 +84,7 @@ private:
 public:
 	void build_from(Tokenizer &toker);
 	void clean();
+	size_t write_to(memory::Memory &mem) const;
 	void print() const;
 };
 
