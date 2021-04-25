@@ -19,7 +19,7 @@ public:
 		return this->left_val;
 	}
 
-	L left() const {
+	const L &left() const {
 		return this->left_val;
 	}
 
@@ -27,7 +27,7 @@ public:
 		return this->right_val;
 	}
 
-	R right() const {
+	const R &right() const {
 		return this->right_val;
 	}
 
