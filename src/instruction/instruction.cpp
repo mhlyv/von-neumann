@@ -4,7 +4,7 @@
 #include "instruction/instruction.h"
 #include "memory/memory.h"
 #include "pair/pair.hpp"
-#include "processing_unit/register.h"
+#include "cpu/register.h"
 #include "vector/vector.hpp"
 
 namespace inst {

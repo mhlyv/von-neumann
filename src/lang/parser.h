@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string.h>
 
+#include "instruction/instruction.h"
 #include "lang/token.h"
 #include "lang/tokenizer.h"
 #include "memory/memory.h"
@@ -81,15 +82,19 @@ public:
 	}
 };
 
+
 class Parser {
 private:
 	AST ast;
 	bool parse_instruction(Tokenizer &toker);
 	bool parse_section(Tokenizer &toker);
+	memory::Data *allocate(size_t data);
+	vector::Vector<memory::Data *> allocated;
+	inst::Instruction *build_instruction(const Section &section, size_t nth);
 public:
 	void build_from(Tokenizer &toker);
 	void clean();
-	size_t write_to(memory::Memory &mem) const;
+	size_t write_to(memory::Memory &mem);
 	void print() const;
 };
 

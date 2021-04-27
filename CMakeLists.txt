@@ -47,18 +47,6 @@ file(GLOB SRC_test
 	${PROJECT_SOURCE_DIR}/test/*.hpp
 )
 
-file(GLOB SRC_control_unit
-	${PROJECT_SOURCE_DIR}/control_unit/*.cpp
-	${PROJECT_SOURCE_DIR}/control_unit/*.h
-	${PROJECT_SOURCE_DIR}/control_unit/*.hpp
-)
-
-file(GLOB SRC_processing_unit
-	${PROJECT_SOURCE_DIR}/processing_unit/*.cpp
-	${PROJECT_SOURCE_DIR}/processing_unit/*.h
-	${PROJECT_SOURCE_DIR}/processing_unit/*.hpp
-)
-
 file(GLOB SRC_cpu
 	${PROJECT_SOURCE_DIR}/cpu/*.cpp
 	${PROJECT_SOURCE_DIR}/cpu/*.h
@@ -69,6 +57,12 @@ file(GLOB SRC_lang
 	${PROJECT_SOURCE_DIR}/lang/*.cpp
 	${PROJECT_SOURCE_DIR}/lang/*.h
 	${PROJECT_SOURCE_DIR}/lang/*.hpp
+)
+
+file(GLOB SRC_machine
+	${PROJECT_SOURCE_DIR}/machine/*.cpp
+	${PROJECT_SOURCE_DIR}/machine/*.h
+	${PROJECT_SOURCE_DIR}/machine/*.hpp
 )
 
 # MEMORY
@@ -102,35 +96,11 @@ add_library(lang
  	${SRC_vector}
 )
 
+target_link_libraries(lang
+	instruction
+)
+
 target_include_directories(lang
-	PUBLIC ${PROJECT_SOURCE_DIR}
-)
-
-# CONTROL_UNIT
-add_library(control_unit
-	${SRC_control_unit}
-)
-
-target_link_libraries(control_unit
-	memory
-	instruction
-)
-
-target_include_directories(control_unit
-	PUBLIC ${PROJECT_SOURCE_DIR}
-)
-
-# PROCESSING_UNIT
-add_library(processing_unit
-	${SRC_processing_unit}
-)
-
-target_link_libraries(processing_unit
-	memory
-	instruction
-)
-
-target_include_directories(processing_unit
 	PUBLIC ${PROJECT_SOURCE_DIR}
 )
 
@@ -142,28 +112,34 @@ add_library(cpu
 target_link_libraries(cpu
 	memory
 	instruction
-	processing_unit
-	control_unit
 )
 
 target_include_directories(cpu
 	PUBLIC ${PROJECT_SOURCE_DIR}
 )
 
+# MACHINE
+add_library(machine
+	${SRC_machine}
+)
+
+target_link_libraries(machine
+	memory
+	cpu
+	lang
+)
+
+target_include_directories(machine
+	PUBLIC ${PROJECT_SOURCE_DIR}
+)
+
 # NEUMANN
 add_executable(neumann
 	${SRC_main}
- 	${SRC_vector}
-	${SRC_pair}
 )
 
 target_link_libraries(neumann
-	memory
-	instruction
-	control_unit
-	processing_unit
-	cpu
-	lang
+	machine
 )
 
 target_include_directories(neumann
@@ -181,8 +157,6 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	target_link_libraries(test_neumann
 		memory
 		instruction
-		control_unit
-		processing_unit
 		cpu
 		lang
 	)

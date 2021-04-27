@@ -1,22 +1,29 @@
 #include <stddef.h>
+#include <stdexcept>
+#include <iostream>
 
-#include "control_unit/control_unit.h"
 #include "cpu/cpu.h"
 #include "instruction/instruction.h"
 #include "instruction/instruction_set.h"
 #include "memory/memory.h"
-#include "processing_unit/processing_unit.h"
 
 namespace cpu {
 
-CPU::CPU(memory::Data &pc, size_t regs) : cu(pc), pu(regs) {
+CPU::CPU(size_t regs) : registers(regs) {
+	if (regs < 1) {
+		throw std::invalid_argument("The CPU needs at least 1 register");
+	}
+	for (memory::Data &r : this->registers) {
+		r = 0;
+	}
 }
 
 size_t CPU::perform_cycle(memory::Memory &mem) {
-	this->cu.fetch(mem);
-	inst::Instruction &inst = this->cu.instruction();
-	this->pu.eval(inst);
-	return inst.read();
+	inst::Instruction *inst = (inst::Instruction *)mem[this->registers[0]];
+	// increment pc before the instruction to allow jumps
+	this->registers[0]++;
+	inst->operator()(this->registers);
+	return inst->read();
 }
 
 void CPU::run(memory::Memory &mem) {

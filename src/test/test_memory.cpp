@@ -5,7 +5,7 @@
 #include "memory/memory.h"
 #include "pair/pair.hpp"
 #include "vector/vector.hpp"
-#include "processing_unit/register.h"
+#include "cpu/register.h"
 
 namespace test {
 

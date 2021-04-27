@@ -1,74 +1,61 @@
-#include <cctype>
-#include <cstring>
+#include <stddef.h>
+#include <string.h>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 
-#include "config.h"
-#include "memory/memory.h"
-#include "vector/vector.hpp"
+#include "machine/machine.h"
 
-namespace args {
-
-static void ParseMemorySize(int argc, const char **argv) {
-	std::size_t memory_size = 0;
+static size_t get_size(int argc, const char **argv) {
+	size_t size = 0;
 
 	if (argc < 2) {
-		throw std::invalid_argument("Number expected after --memory");
+		throw std::invalid_argument("number expected after switch");
 	}
 
 	std::stringstream sstream(argv[1]);
-	sstream >> memory_size;
+	sstream >> size;
 
-	if (memory_size == 0) {
-		throw std::invalid_argument("0 is an invalid memory size");
-	} else {
-		config::memory_size = memory_size;
+	if (size == 0) {
+		throw std::invalid_argument("0 is an invalid number size");
 	}
+
+	return size;
 }
 
-static void TryFileName(const char *filename) {
-	std::ifstream file(filename);
+int main(const int argc, const char **argv) {
+	size_t memory_size = 1000;
+	size_t n_registers = 10;
+	const char *filename = nullptr;
 
-	if (file.good()) {
-		config::filename = filename;
-	} else {
-		throw std::invalid_argument("Invalid file name");
-	}
-}
-
-static void ParseArgs(int argc, const char **argv) {
 	for (int i = 1; i < argc; i++) {
-		if (std::strcmp(argv[i], "--verbose") == 0) {
-			config::verbose = true;
-		} else if (std::strcmp(argv[i], "--memory") == 0) {
-			ParseMemorySize(argc - i, argv + i);
+		if (strcmp(argv[i], "--memory") == 0) {
+			memory_size = get_size(argc - i, argv + i);
 			i++; // Skip the number
-		} else if (config::filename == nullptr) {
+		} else if (strcmp(argv[i], "--registers") == 0) {
+			n_registers = get_size(argc - i, argv + i);
+			i++; // Skip the number
+		} else if (filename == nullptr) {
 			// This should be the last option after all other flags
-			TryFileName(argv[i]);
-		} else {
-			// If the argument falls through, it's invalid
-			if (config::verbose) {
-				std::cerr << "Invalid argument: " << argv[i] << std::endl;
+			std::ifstream file(argv[i]);
+			if (file.good()) {
+				filename = argv[i];
+			} else {
+				throw std::invalid_argument("Invalid file name");
 			}
+		} else {
 			throw std::invalid_argument("Invalid argument");
 		}
 	}
 
-	if (config::filename == nullptr) {
+	if (filename == nullptr) {
 		throw std::invalid_argument("No file name provided");
 	}
-}
 
-}
-
-int main(const int argc, const char **argv) {
-	args::ParseArgs(argc, argv);
-	if (config::verbose) {
-		config::PrintConfig();
-	}
+	machine::Machine machine(memory_size, n_registers);
+	machine.run(filename);
 
 	return 0;
 }

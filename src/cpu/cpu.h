@@ -3,18 +3,20 @@
 
 #include <stddef.h>
 
-#include "control_unit/control_unit.h"
+#include "cpu/register.h"
 #include "memory/memory.h"
-#include "processing_unit/processing_unit.h"
+#include "vector/vector.hpp"
 
 namespace cpu {
 
 class CPU {
 private:
-	cu::ControlUnit cu;
-	pu::ProcessingUnit pu;
+	// registers:
+	// [0]: program counter
+	// ...: general purpose
+	vector::Vector<Register> registers;
 public:
-	CPU(memory::Data &pc, size_t regs);
+	CPU(size_t regs);
 	size_t perform_cycle(memory::Memory &mem);
 	void run(memory::Memory &mem);
 };

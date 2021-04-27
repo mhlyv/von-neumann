@@ -8,6 +8,9 @@ namespace memory {
 
 Memory::Memory(size_t len) : len(len) {
 	this->memory = new Data *[this->len];
+	for (size_t i = 0; i < len; i++) {
+		this->memory[i] = nullptr;
+	}
 }
 
 Data *&Memory::operator[](size_t i) {
