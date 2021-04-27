@@ -10,7 +10,6 @@ section .text
 	move r3, 1  ; b
 loop:
 	sub r1, 1
-	move r4, r2 ; backup
 	add r2, r3  ; a = a + b
 	swap r2, r3 ; swap values
 	print r2
