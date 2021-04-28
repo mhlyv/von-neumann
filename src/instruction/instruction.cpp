@@ -78,10 +78,6 @@ void Instruction::operator()(vector::Vector<Register> &registers) {
 	(void)registers;
 }
 
-memory::Data *Instruction::clone() {
-	return new Instruction(this->read(), this->operands);
-}
-
 Instruction::~Instruction() {
 	this->operands.clean();
 }

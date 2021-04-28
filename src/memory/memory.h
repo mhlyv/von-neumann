@@ -21,7 +21,6 @@ public:
 	operator data_t&();
 	operator data_t() const;
 	virtual void write(Data *data);
-	virtual Data *clone();
 	virtual ~Data();
 };
 

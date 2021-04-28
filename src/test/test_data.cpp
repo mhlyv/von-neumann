@@ -24,13 +24,6 @@ void test_data_write() {
 	assert(d.read() == d1.read());
 }
 
-void test_data_clone() {
-	memory::Data d = 42;
-	memory::Data *dp = d.clone();
-	assert(d.read() == dp->read());
-	delete dp;
-}
-
 void test_data_assignment() {
 	memory::Data::data_t u1 = 42;
 	memory::Data::data_t u2 = 13;
@@ -216,7 +209,6 @@ void test_data() {
 	test_data_default_constructor();
 	test_data_constructor();
 	test_data_write();
-	test_data_clone();
 	test_data_assignment();
 	test_data_inc_dec();
 	test_data_arithmetic();

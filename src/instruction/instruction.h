@@ -33,7 +33,6 @@ public:
 	Operand &operator[](size_t i);
 	void write(memory::Data *data);
 	virtual void operator()(vector::Vector<Register> &registers);
-	memory::Data *clone();
 	virtual ~Instruction();
 };
 
