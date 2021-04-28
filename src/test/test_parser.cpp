@@ -10,12 +10,14 @@
 namespace test {
 
 void test_parser() {
-	lang::Tokenizer toker("examples/fibonacci.s");
+	lang::Tokenizer toker("examples/nothing.s");
 	lang::Parser parser;
 	parser.build_from(toker);
 	// parser.print();
 	memory::Memory mem(1000);
 	size_t inst_count = parser.write_to(mem);
+	cpu::CPU cpu(2);
+	cpu.run(mem);
 	for (size_t i = 0; i < inst_count; i++) {
 		delete mem[i];
 	}
