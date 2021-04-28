@@ -13,7 +13,7 @@ void test_parser() {
 	lang::Tokenizer toker("examples/fibonacci.s");
 	lang::Parser parser;
 	parser.build_from(toker);
-	parser.print();
+	// parser.print();
 	memory::Memory mem(1000);
 	size_t inst_count = parser.write_to(mem);
 	for (size_t i = 0; i < inst_count; i++) {
