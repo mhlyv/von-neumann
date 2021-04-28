@@ -1,11 +1,11 @@
 section .text
-	move r1, 0x1E ; nth fibonacci
-	move r2, 0  ; a
-	move r3, 1  ; b
+	move r2, 0x1E ; nth fibonacci
+	move r3, 0  ; a
+	move r4, 1  ; b
 loop:
-	sub r1, 1
-	add r2, r3  ; a = a + b
-	swap r2, r3 ; swap values
-	print r2
-	jmpnz r1, loop
+	sub r2, 1
+	add r3, r4  ; a = a + b
+	swap r3, r4 ; swap values
+	print r3
+	jmpnz r2, loop
 	exit

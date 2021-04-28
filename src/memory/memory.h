@@ -25,7 +25,7 @@ public:
 };
 
 class Memory {
-private:
+protected:
 	Data **memory;
 	const size_t len;
 public:

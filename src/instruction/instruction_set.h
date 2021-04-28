@@ -35,6 +35,8 @@ INSTRUCTION(print_inst);
 INSTRUCTION(jmpz_inst);
 INSTRUCTION(jmpnz_inst);
 INSTRUCTION(swap_inst);
+INSTRUCTION(push_inst);
+INSTRUCTION(pop_inst);
 
 Instruction *build_instruction(const lang::Token &name,
 		vector::Vector<Operand> &operands);

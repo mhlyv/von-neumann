@@ -191,6 +191,35 @@ INSTRUCTION(swap_inst) {
 	*src = tmp;
 }
 
+INSTRUCTION(push_inst) {
+	// read stack pointer
+	memory::Data::data_t raw = registers[1];
+	memory::Data **sptr = reinterpret_cast<memory::Data **>(raw);
+	sptr++;
+	if (this->operands[0].is_register()) {
+		*sptr = new memory::Data(registers[this->operands[0]]);
+	} else {
+		*sptr = new memory::Data((memory::Data::data_t)this->operands[0]);
+	}
+	// write stack pointer
+	registers[1] = reinterpret_cast<memory::Data::data_t>(sptr);
+}
+
+INSTRUCTION(pop_inst) {
+	// read stack pointer
+	memory::Data::data_t raw = registers[1];
+	memory::Data **sptr = reinterpret_cast<memory::Data **>(raw);
+	if (this->operands[0].is_register()) {
+		registers[this->operands[0]] = **sptr;
+	} else {
+		this->operands[0] = **sptr;
+	}
+	delete *sptr;
+	sptr--;
+	// write stack pointer
+	registers[1] = reinterpret_cast<memory::Data::data_t>(sptr);
+}
+
 Instruction *build_instruction(const lang::Token &name,
 		vector::Vector<Operand> &operands) {
 	TRANSLATE( "exit", exit_opcode,  exit_inst);
@@ -203,6 +232,8 @@ Instruction *build_instruction(const lang::Token &name,
 	TRANSLATE( "jmpz",           8,  jmpz_inst);
 	TRANSLATE("jmpnz",           9, jmpnz_inst);
 	TRANSLATE( "swap",          10,  swap_inst);
+	TRANSLATE( "push",          11,  push_inst);
+	TRANSLATE(  "pop",          12,   pop_inst);
 
 	throw std::invalid_argument("No such instruction");
 	return nullptr; // unreachable

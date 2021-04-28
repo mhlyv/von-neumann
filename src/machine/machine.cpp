@@ -16,7 +16,14 @@ size_t Machine::setup(const char *filename) {
 	lang::Tokenizer toker(filename);
 	lang::Parser parser;
 	parser.build_from(toker);
-	return parser.write_to((memory::Memory &)*this);
+	size_t n_instructions = parser.write_to((memory::Memory &)*this);
+	memory::Data **sp = this->memory;
+	for (size_t i = 0; i < n_instructions - 1; i++) {
+		sp++;
+	}
+	uint64_t d = reinterpret_cast<uint64_t>(sp);
+	this->set_sp(d);
+	return n_instructions;
 }
 
 void Machine::run(const char *filename) {

@@ -13,10 +13,12 @@ class CPU {
 private:
 	// registers:
 	// [0]: program counter
+	// [1]: stack pointer
 	// ...: general purpose
 	vector::Vector<Register> registers;
 public:
 	CPU(size_t regs);
+	void set_sp(Register sp);
 	size_t perform_cycle(memory::Memory &mem);
 	void run(memory::Memory &mem);
 };

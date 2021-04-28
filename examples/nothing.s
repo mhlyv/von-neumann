@@ -1,6 +1,6 @@
 section .text
-	move r1, 12
+	move r2, 0xFF
 loop:
-	sub r1, 1
-	jmpnz r1, loop
+	sub r2, 1
+	jmpnz r2, loop
 	exit
