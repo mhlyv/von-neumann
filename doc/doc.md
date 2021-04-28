@@ -2,6 +2,9 @@
 
 ## [(eredeti forráskód itt)](https://github.com/mhlyv/von-neumann)
 
+## UML diagram
+![UML](uml.png)
+
 ## A főprogram futása (a részletek elkerülésével)
 - A főprogram értelmezi a parancssori paramétereket:
 	- ```--memory <szám>``` a gép memóriájának mérete (default: 1000)
