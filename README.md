@@ -5,7 +5,7 @@
 ```
 $ cat examples/fibonacci.s
 section .text
-	move r1, 30 ; nth fibonacci
+	move r1, 0x1E ; nth fibonacci
 	move r2, 0  ; a
 	move r3, 1  ; b
 loop:
