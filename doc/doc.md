@@ -60,7 +60,10 @@ de csak a *debug* fordítási célban (ennek belépési pontja a
 forráskódban ez nem lesz, hanem csak a rendes főprogram lesz az egyetlen
 futtatható fordítási egység (ennek belépési pontja a ```src/main.cpp```
 fájlban található).
-- A memóriaszivárgások elkerülését a valgrind
-eszközzel és az AddressSanitizer használatával biztosítottam, az eredeti
-fordítási rendszeremben a *debug* fordítási célban minden az
-```-fsanitize=address``` flag-gel van fordítva.
+- A memóriaszivárgások elkerülését a valgrind eszközzel és az
+AddressSanitizer használatával biztosítottam, az eredeti fordítási
+rendszeremben a *debug* fordítási célban minden az ```-fsanitize=address```
+flag-gel van fordítva. A ```"push"```/```"pop"``` instrukciók használata
+nincs ellenőrizve, ha a futtatott program nem üríti ki helyesen a `stack`-et,
+akkor memóriaszivárgás lesz, ha pedig többször `pop`-ol mint `push`-ol, akkor
+pedig érhető módon más problémákat fog okozni.
