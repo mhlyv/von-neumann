@@ -25,18 +25,26 @@ namespace inst {
 
 const size_t exit_opcode(1);
 
-INSTRUCTION(exit_inst);
-INSTRUCTION(move_inst);
-INSTRUCTION(add_inst);
-INSTRUCTION(sub_inst);
-INSTRUCTION(mult_inst);
-INSTRUCTION(div_inst);
-INSTRUCTION(print_inst);
-INSTRUCTION(jmpz_inst);
-INSTRUCTION(jmpnz_inst);
-INSTRUCTION(swap_inst);
-INSTRUCTION(push_inst);
-INSTRUCTION(pop_inst);
+INSTRUCTION(  exit_inst);
+INSTRUCTION(  move_inst);
+INSTRUCTION(   add_inst);
+INSTRUCTION(   sub_inst);
+INSTRUCTION(  mult_inst);
+INSTRUCTION(   div_inst);
+INSTRUCTION(   shl_inst);
+INSTRUCTION(   shr_inst);
+INSTRUCTION(   and_inst);
+INSTRUCTION(    or_inst);
+INSTRUCTION(   xor_inst);
+INSTRUCTION(   not_inst);
+INSTRUCTION( print_inst);
+INSTRUCTION(  jmpz_inst);
+INSTRUCTION( jmpnz_inst);
+INSTRUCTION(  swap_inst);
+INSTRUCTION(  push_inst);
+INSTRUCTION(   pop_inst);
+INSTRUCTION(  call_inst);
+INSTRUCTION(   ret_inst);
 
 Instruction *build_instruction(const lang::Token &name,
 		vector::Vector<Operand> &operands);
