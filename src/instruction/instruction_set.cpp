@@ -248,6 +248,24 @@ INSTRUCTION(jmpz_inst) {
 	}
 }
 
+// if the value of the first operand is 0, add the value of the second operand
+// to the value of the program counter register and comensate for back jump
+INSTRUCTION(relz_inst) {
+	assert(operands.size() == 2);
+	memory::Data *src;
+	OPERAND(src, 0);
+
+	// fix back jumps, compensate for the cpu incrementing the pc
+	int64_t signed_val = (int64_t)*(operands[1].left());
+	if (signed_val < 0) {
+		signed_val--;
+	}
+
+	if (*src == 0) {
+		registers[0] += (memory::Data::data_t)signed_val;
+	}
+}
+
 // if the value of the first operand is not 0, set the value of the program
 // counter register to the value of the second operand
 INSTRUCTION(jmpnz_inst) {
@@ -257,6 +275,25 @@ INSTRUCTION(jmpnz_inst) {
 
 	if (*src != 0) {
 		registers[0] = *(operands[1].left());
+	}
+}
+
+// if the value of the first operand is not 0, add the value of the second
+// operand to the value of the program counter register and compensate for
+// back jumps
+INSTRUCTION(relnz_inst) {
+	assert(operands.size() == 2);
+	memory::Data *src;
+	OPERAND(src, 0);
+
+	// fix back jumps, compensate for the cpu incrementing the pc
+	int64_t signed_val = (int64_t)*(operands[1].left());
+	if (signed_val < 0) {
+		signed_val--;
+	}
+
+	if (*src != 0) {
+		registers[0] += (memory::Data::data_t)signed_val;
 	}
 }
 
@@ -334,12 +371,14 @@ Instruction *build_instruction(const lang::Token &name,
 	TRANSLATE(  "not",          12,   not_inst);
 	TRANSLATE("print",          13, print_inst);
 	TRANSLATE( "jmpz",          14,  jmpz_inst);
-	TRANSLATE("jmpnz",          15, jmpnz_inst);
-	TRANSLATE( "swap",          16,  swap_inst);
-	TRANSLATE( "push",          17,  push_inst);
-	TRANSLATE(  "pop",          18,   pop_inst);
-	TRANSLATE( "call",          19,	 call_inst);
-	TRANSLATE(  "ret",          20,   ret_inst);
+	TRANSLATE( "relz",          15,  relz_inst);
+	TRANSLATE("jmpnz",          16, jmpnz_inst);
+	TRANSLATE("relnz",          17, relnz_inst);
+	TRANSLATE( "swap",          18,  swap_inst);
+	TRANSLATE( "push",          19,  push_inst);
+	TRANSLATE(  "pop",          20,   pop_inst);
+	TRANSLATE( "call",          21,	 call_inst);
+	TRANSLATE(  "ret",          22,   ret_inst);
 
 	throw std::invalid_argument("No such instruction");
 	return nullptr; // unreachable
