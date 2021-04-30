@@ -10,6 +10,7 @@
 
 namespace lang {
 
+// object to read tokens from a file
 class Tokenizer {
 public:
 	// (line_number, tokens[])
@@ -18,8 +19,8 @@ private:
 	std::ifstream ifs;
 	Line line;
 	static const size_t max_token_size = 64;
-	bool important(char c) const;
 	char buffer[max_token_size];
+	bool important(char c) const;
 	bool skip_whitespace();
 	bool skip_comment();
 public:

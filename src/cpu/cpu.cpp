@@ -17,10 +17,13 @@ CPU::CPU(size_t regs) : registers(regs) {
 		r = 0;
 	}
 }
+
+// set the stack pointer register
 void CPU::set_sp(Register sp) {
 	registers[1] = sp;
 }
 
+// evalute the next instruction, and increment the program counter
 size_t CPU::perform_cycle(memory::Memory &mem) {
 	inst::Instruction *inst = (inst::Instruction *)mem[this->registers[0]];
 	// increment pc before the instruction to allow jumps
@@ -29,6 +32,7 @@ size_t CPU::perform_cycle(memory::Memory &mem) {
 	return inst->read();
 }
 
+// evalute instructions until the first exit instruction is evaluated
 void CPU::run(memory::Memory &mem) {
 	while (this->perform_cycle(mem) != inst::exit_opcode);
 }

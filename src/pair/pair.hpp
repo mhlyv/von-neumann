@@ -3,6 +3,7 @@
 
 namespace pair {
 
+// object to hold 2 types of data
 template<typename L, typename R>
 class Pair {
 private:

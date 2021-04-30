@@ -15,7 +15,8 @@
 
 namespace lang {
 
-// return if the token stream ended, or if the line is a section
+// read an instruction or a label from the tokenizer, and put it in the AST
+// returns true if the token stream ended, or if the line is a section
 bool Parser::parse_instruction(Tokenizer &toker) {
 	Tokenizer::Line &line = toker.next_line();
 	if (line.right().size() == 0 || line.right()[0] == "section") {
@@ -24,6 +25,7 @@ bool Parser::parse_instruction(Tokenizer &toker) {
 
 	// check if the line is a label
 	if (line.right().size() == 2 && line.right()[1] == ":") {
+		// make new label
 		pair::Pair<Token, size_t> label(
 			line.right()[0],
 			this->ast[this->ast.size() - 1]
@@ -31,43 +33,55 @@ bool Parser::parse_instruction(Tokenizer &toker) {
 				.right()
 				.size()
 		);
+
+		// append to labels of the current section
 		this->ast[this->ast.size() - 1]
 			.right()
 			.left()
 			.append(label);
+
 		return false;
 	}
 
+	// make new instruction
 	pair::Pair<Token, vector::Vector<Token>> new_instruction;
 	new_instruction.left() = line.right()[0];
 
 	// if the instruction does not have arguments
 	if (line.right().size() == 1) {
+		// append instruction to the current section
 		this->ast[this->ast.size() - 1]
 			.right()
 			.right()
 			.append(new_instruction);
+
 		return false;
 	}
 
+	// if the instruction operand list starts with ","
 	if (line.right()[1] == ",") {
 		throw syntax_error(line,
 				"token expected after instruction name, found: `,`");
 	}
 
+	// parse instruction operands
 	for (size_t i = 1; i < line.right().size(); i++) {
 		if (line.right()[i] == "," && i == line.right().size() - 1) {
+			// no operand after ","
 			throw syntax_error(line, "token expected after `,`");
 		} else if (line.right()[i] == "," && i < line.right().size() &&
 				line.right()[i + 1] == ",") {
+			// double ","
 			throw syntax_error(line, "token expected after `,`, found: `,`");
-		} else if (i & 1) {
+		} else if (i & 1) { // skip ","-s
+			// append operand to instruction
 			new_instruction
 				.right()
 				.append(line.right()[i]);
 		}
 	}
 
+	// append instruction to current section
 	this->ast[this->ast.size() - 1]
 		.right()
 		.right()
@@ -76,7 +90,8 @@ bool Parser::parse_instruction(Tokenizer &toker) {
 	return false;
 }
 
-// return if the token stream ended
+// parse a section and put it in the AST
+// return true if the token stream ended
 bool Parser::parse_section(Tokenizer &toker) {
 	Tokenizer::Line &line = toker.get_line();
 	if (line.right().size() == 0) {
@@ -88,14 +103,16 @@ bool Parser::parse_section(Tokenizer &toker) {
 	} else if (line.right().size() != 2) {
 		throw syntax_error(line, "expected syntax: `section <section name>`");
 	} else {
+		// create new section in the AST
 		Section new_section;
-
 		new_section.left() = Token(line.right()[1]);
-
 		this->ast.append(new_section);
 	}
 
+	// parse instructions in the section
 	while (!parse_instruction(toker));
+
+	// check if the end was reached
 	line = toker.get_line();
 	if (line.right().size() == 0) {
 		return true;
@@ -104,12 +121,14 @@ bool Parser::parse_section(Tokenizer &toker) {
 	return false;
 }
 
+// allocate data
 memory::Data *Parser::allocate(size_t data) {
 	memory::Data *d = new memory::Data(data);
 	this->allocated.append(d);
 	return d;
 }
 
+// parse all sections from the tokenizer, and put them in the AST
 void Parser::build_from(Tokenizer &toker) {
 	this->clean();
 	toker.next_line();
@@ -120,6 +139,7 @@ void Parser::clean() {
 	ast.clean();
 }
 
+// create actual instruction object from the nth instruction in the section
 inst::Instruction *Parser::build_instruction(
 		const Section &section, size_t nth) {
 	const Instruction &inst = section.right().right()[nth];
@@ -127,9 +147,11 @@ inst::Instruction *Parser::build_instruction(
 	inst::Operand operand;
 	const Token &name = inst.left();
 
+	// loop over operands of the instruction
 	for (const Token *tok = inst.right().cbegin();
 			tok != inst.right().cend(); ++tok) {
 		bool found = false;
+
 		// check if token is a label
 		for (const Label *label = section.right().left().cbegin();
 				!found && label != section.right().left().cend(); ++label) {
@@ -178,12 +200,14 @@ inst::Instruction *Parser::build_instruction(
 	return inst::build_instruction(name, operands);
 }
 
+// write to program described by the AST to the memory
 // return the number of instructions written to memory
 size_t Parser::write_to(memory::Memory &mem) {
 	size_t written = 0;
 	const Section *text = nullptr;
 	vector::Vector<size_t> exits;
 
+	// find the .text section in the AST
 	for (const Section *section = this->ast.cbegin();
 			section != this->ast.cend(); ++section) {
 		if (section->left() == ".text") {
@@ -196,13 +220,17 @@ size_t Parser::write_to(memory::Memory &mem) {
 		throw std::invalid_argument("No `.text` section was found");
 	}
 
+	// create and write instructions to memory
 	for (const Instruction *inst = text->right().right().cbegin();
 			inst != text->right().right().cend(); ++inst) {
 		assert(mem[written] == nullptr);
 		mem[written] = this->build_instruction(*text, written);
+
+		// save indexes of exit instructions
 		if (mem[written]->read() == inst::exit_opcode) {
 			exits.append(written);
 		}
+
 		written++;
 	}
 
@@ -210,12 +238,15 @@ size_t Parser::write_to(memory::Memory &mem) {
 		throw std::invalid_argument("program doesn't have `exit`");
 	}
 
-	// build exits to free allocations
+	// build a list of instruction operands from the accumulated instructions
 	vector::Vector<inst::Operand> exit_operands;
 	for (memory::Data *d : this->allocated) {
 		inst::Operand op(d, false);
 		exit_operands.append(op);
 	}
+
+	// rebuild exit instructions with the accumulated allocations to avoid
+	// memory leaks
 	Token exit_token("exit");
 	for (size_t i = 0; i < exits.size(); i++) {
 		delete mem[exits[i]];
@@ -225,6 +256,7 @@ size_t Parser::write_to(memory::Memory &mem) {
 	return written;
 }
 
+// print formatted AST to stdout
 void Parser::print() const {
 	// iterate sections
 	for (const Section *section = this->ast.cbegin();

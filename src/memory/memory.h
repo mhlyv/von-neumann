@@ -8,6 +8,7 @@
 
 namespace memory {
 
+// object to hold a unit of data
 class Data {
 public:
 	typedef uint64_t data_t;
@@ -24,8 +25,9 @@ public:
 	virtual ~Data();
 };
 
+// object to hold a list of data
 class Memory {
-protected:
+private:
 	Data **memory;
 	const size_t len;
 public:

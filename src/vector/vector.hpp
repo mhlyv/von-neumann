@@ -6,6 +6,7 @@
 
 namespace vector {
 
+// object to hold a list of data
 template<typename T>
 class Vector {
 private:

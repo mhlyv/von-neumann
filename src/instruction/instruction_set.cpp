@@ -13,6 +13,7 @@
 #define INSTRUCTION(_name) \
 	void _name::operator()(vector::Vector<Register> &registers)
 
+// make a new instruction
 #define TRANSLATE(_name, _op_code, _inst) \
 	do { \
 		if (name == _name) { \
@@ -20,7 +21,7 @@
 		} \
 	} while (0)
 
-// check if operand is a register, put value in _name
+// put the value of the _nth operand in _name (handle register/literal)
 #define OPERAND(_name, _nth) \
 	do { \
 		if (this->operands[_nth].is_register()) { \
@@ -60,6 +61,7 @@
 
 namespace inst {
 
+// free all values passed as operands
 INSTRUCTION(exit_inst) {
 	(void)registers;
 	for (Operand &o : this->operands) {
@@ -67,6 +69,7 @@ INSTRUCTION(exit_inst) {
 	}
 }
 
+// copy the value of the second operand to the first operand
 INSTRUCTION(move_inst) {
 	memory::Data *dest;
 	memory::Data *src;
@@ -79,6 +82,7 @@ INSTRUCTION(move_inst) {
 	*dest = *src;
 }
 
+// add the value of all operands to the first operands (except itself)
 INSTRUCTION(add_inst) {
 	memory::Data *dest;
 	memory::Data *src;
@@ -91,6 +95,7 @@ INSTRUCTION(add_inst) {
 	}
 }
 
+// substract the value of all operands from the first operands (except itself)
 INSTRUCTION(sub_inst) {
 	memory::Data *dest;
 	memory::Data *src;
@@ -103,6 +108,7 @@ INSTRUCTION(sub_inst) {
 	}
 }
 
+// multiply the value of the first operand with all operands (except itself)
 INSTRUCTION(mult_inst) {
 	memory::Data *dest;
 	memory::Data *src;
@@ -115,6 +121,7 @@ INSTRUCTION(mult_inst) {
 	}
 }
 
+// divide the value of the first operand with all operands (except itself)
 INSTRUCTION(div_inst) {
 	memory::Data *dest;
 	memory::Data *src;
@@ -127,12 +134,20 @@ INSTRUCTION(div_inst) {
 	}
 }
 
+// shift the bits of the value of the first operand to the left with the value
+// of the second operand (inserting 0-s at the end)
 INSTRUCTION(shl_inst) {
-	assert(this->operands.size() == 2);
 	memory::Data *dest;
 	memory::Data *src;
+
+	assert(this->operands.size() == 2);
+
 	OPERAND(dest, 0);
 	OPERAND(src, 1);
+
+	// if the shift value is larger than the number of bits in the value to
+	// be shifted it causes undefined behavior
+	// thank you c++ compiler, very cool
 	if (sizeof(memory::Data::data_t) > *src) {
 		*dest <<= *src;
 	} else {
@@ -140,12 +155,20 @@ INSTRUCTION(shl_inst) {
 	}
 }
 
+// shift the bits of the value of the first operand to the right with the value
+// of the second operand (inserting 0-s at the front)
 INSTRUCTION(shr_inst) {
-	assert(this->operands.size() == 2);
 	memory::Data *dest;
 	memory::Data *src;
+
+	assert(this->operands.size() == 2);
+
 	OPERAND(dest, 0);
 	OPERAND(src, 1);
+
+	// if the shift value is larger than the number of bits in the value to
+	// be shifted it causes undefined behavior
+	// thank you c++ compiler, very cool
 	if (sizeof(memory::Data::data_t) > *src) {
 		*dest >>= *src;
 	} else {
@@ -153,40 +176,57 @@ INSTRUCTION(shr_inst) {
 	}
 }
 
+// perform logical `and` between the values of the operands and put the result
+// in the first operand
 INSTRUCTION(and_inst) {
-	assert(this->operands.size() == 2);
 	memory::Data *dest;
 	memory::Data *src;
+
 	OPERAND(dest, 0);
-	OPERAND(src, 1);
-	*dest &= *src;
+
+	for (size_t i = 1; i < this->operands.size(); i++) {
+		OPERAND(src, i);
+		*dest &= *src;
+	}
 }
 
+// perform logical `or` between the values of the operands and put the result
+// in the first operand
 INSTRUCTION(or_inst) {
-	assert(this->operands.size() == 2);
 	memory::Data *dest;
 	memory::Data *src;
+
 	OPERAND(dest, 0);
-	OPERAND(src, 1);
-	*dest |= *src;
+
+	for (size_t i = 1; i < this->operands.size(); i++) {
+		OPERAND(src, i);
+		*dest |= *src;
+	}
 }
 
+// perform logical `xor` between the values of the operands and put the result
+// in the first operand
 INSTRUCTION(xor_inst) {
-	assert(this->operands.size() == 2);
 	memory::Data *dest;
 	memory::Data *src;
+
 	OPERAND(dest, 0);
-	OPERAND(src, 1);
-	*dest ^= *src;
+
+	for (size_t i = 1; i < this->operands.size(); i++) {
+		OPERAND(src, i);
+		*dest ^= *src;
+	}
 }
 
+// perform logical `not` on the value of the first operand
 INSTRUCTION(not_inst) {
-	assert(this->operands.size() == 1);
 	memory::Data *dest;
+	assert(this->operands.size() == 1);
 	OPERAND(dest, 0);
 	*dest = ~*dest;
 }
 
+// print the value of the operands, divided by a space
 INSTRUCTION(print_inst) {
 	memory::Data *src;
 	for (size_t i = 0; i < this->operands.size(); i++) {
@@ -196,16 +236,20 @@ INSTRUCTION(print_inst) {
 	std::cout << std::endl;
 }
 
+// if the value of the first operand is 0, set the value of the program counter
+// register to the value of the second operand
 INSTRUCTION(jmpz_inst) {
 	assert(operands.size() == 2);
 	memory::Data *src;
 	OPERAND(src, 0);
 
 	if (*src == 0) {
-		registers[0] = *(operands[1].left()) - 1;
+		registers[0] = *(operands[1].left());
 	}
 }
 
+// if the value of the first operand is not 0, set the value of the program
+// counter register to the value of the second operand
 INSTRUCTION(jmpnz_inst) {
 	assert(operands.size() == 2);
 	memory::Data *src;
@@ -216,6 +260,7 @@ INSTRUCTION(jmpnz_inst) {
 	}
 }
 
+// swap the value of the first operand with the value of the second argument
 INSTRUCTION(swap_inst) {
 	assert(operands.size() == 2);
 	memory::Data *dest;
@@ -232,6 +277,7 @@ INSTRUCTION(swap_inst) {
 	*src = tmp;
 }
 
+// push the value of the first operand on the stack
 INSTRUCTION(push_inst) {
 	assert(this->operands.size() == 1);
 	memory::Data *src;
@@ -239,6 +285,7 @@ INSTRUCTION(push_inst) {
 	PUSH(*src);
 }
 
+// pop a value from the stack and copy it into the first operand
 INSTRUCTION(pop_inst) {
 	assert(this->operands.size() == 1);
 	memory::Data *dest;
@@ -246,6 +293,7 @@ INSTRUCTION(pop_inst) {
 	POP(*dest);
 }
 
+// call a subroutine marked by the first operand
 INSTRUCTION(call_inst) {
 	assert(this->operands.size() == 1);
 	memory::Data *dest;
@@ -261,12 +309,15 @@ INSTRUCTION(call_inst) {
 	registers[0] = *dest;
 }
 
+// return from subroutine
 INSTRUCTION(ret_inst) {
 	assert(this->operands.size() == 0);
 	// jump to position of next instruction
 	POP(registers[0]);
 }
 
+// build an instruction from based on the name of the instruction
+// returns a pointer to a dynamically allocated instruction object
 Instruction *build_instruction(const lang::Token &name,
 		vector::Vector<Operand> &operands) {
 	TRANSLATE( "exit", exit_opcode,  exit_inst);

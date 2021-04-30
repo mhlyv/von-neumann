@@ -10,6 +10,9 @@
 
 namespace inst {
 
+// an argument of an instruction
+// it can either mark a register (then the value means the nth register)
+// or it can be a literal value
 class Operand : public pair::Pair<memory::Data *, bool> {
 public:
 	Operand();
@@ -23,6 +26,10 @@ public:
 	operator memory::Data() const;
 };
 
+// an instruction that can be stored in Memory
+// it has a list of operands
+// for evaluation (using the operator()) the registers need to be passed as
+// argument
 class Instruction : public memory::Data {
 protected:
 	// the boolean is true if the operand is a register, otherwise false

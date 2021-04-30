@@ -23,16 +23,19 @@ namespace lang {
 //     Instruction(name, operands...)
 //     ...
 
+// AST representation of an instruction
 typedef pair::Pair<
 	Token,	// name of instruction
 	vector::Vector<Token> // arguments of instruction
 > Instruction;
 
+// AST representation of a label
 typedef pair::Pair<
 	Token, // name of label
 	size_t // nth instruction in section
 > Label;
 
+// AST representation of a section
 typedef pair::Pair<
 	Token,	// name of section
 	pair::Pair<
@@ -45,7 +48,7 @@ typedef pair::Pair<
 	>		
 > Section;
 
-// ast is a list of sections
+// AST is a list of sections
 typedef vector::Vector<Section> AST;
 
 class syntax_error : public std::exception {
@@ -86,10 +89,10 @@ public:
 class Parser {
 private:
 	AST ast;
+	vector::Vector<memory::Data *> allocated; // list of allocations
 	bool parse_instruction(Tokenizer &toker);
 	bool parse_section(Tokenizer &toker);
 	memory::Data *allocate(size_t data);
-	vector::Vector<memory::Data *> allocated;
 	inst::Instruction *build_instruction(const Section &section, size_t nth);
 public:
 	void build_from(Tokenizer &toker);

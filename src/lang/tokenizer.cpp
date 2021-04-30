@@ -9,6 +9,7 @@
 
 namespace lang {
 
+// return true if the charecter is `important`
 bool Tokenizer::important(char c) const {
 	const char *chars = "\n:,;";
 	while (*chars != '\0') {
@@ -20,6 +21,8 @@ bool Tokenizer::important(char c) const {
 	return false;
 }
 
+// remove leading whitespace from the input stream
+// return true if any whitespace was skipped
 bool Tokenizer::skip_whitespace() {
 	char in;
 	bool has_skipped = false;
@@ -38,6 +41,8 @@ bool Tokenizer::skip_whitespace() {
 	return has_skipped;
 }
 
+// skip comments from the input stream
+// return true if any comments were skipped
 bool Tokenizer::skip_comment() {
 	char in;
 	bool has_skipped = false;
@@ -59,6 +64,7 @@ bool Tokenizer::skip_comment() {
 	return has_skipped;
 }
 
+// open file for reading
 Tokenizer::Tokenizer(const char *filename) : ifs(filename), line() {
 	if (!this->ifs.is_open()) {
 		throw std::invalid_argument("Couldn't open file!");
@@ -66,6 +72,7 @@ Tokenizer::Tokenizer(const char *filename) : ifs(filename), line() {
 	this->line.left() = 0;
 }
 
+// read and return the next token from the input stream
 Token Tokenizer::next_token() {
 	char in;
 	size_t read = 0;
@@ -76,11 +83,13 @@ Token Tokenizer::next_token() {
 
 	this->skip_comment();
 
+	// if we reached an important character
 	if (this->important(this->ifs.peek())) {
 		this->ifs.get(in);
 		this->buffer[read] = in;
 		read++;
 	} else {
+		// read until reaching whitespace ir an important character
 		while (!isspace(this->ifs.peek()) &&
 				!this->important(this->ifs.peek())) {
 			this->ifs.get(in);
@@ -93,6 +102,7 @@ Token Tokenizer::next_token() {
 	return Token(this->buffer);
 }
 
+// read and return the next line of tokens
 Tokenizer::Line &Tokenizer::next_line() {
 	Token tok;
 
@@ -103,10 +113,11 @@ Tokenizer::Line &Tokenizer::next_line() {
 	}
 
 	do {
-		this->line.left()++;
+		this->line.left()++; // increase the line number
 		this->line.right().clean();
 		tok = this->next_token();
 
+		// read tokens until the end of the line
 		while (tok != "\n") {
 			this->line.right().append(tok);
 			tok = this->next_token();

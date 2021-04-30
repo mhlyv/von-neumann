@@ -8,6 +8,7 @@
 
 #include "machine/machine.h"
 
+// read a number from command line args
 static size_t get_size(int argc, const char **argv) {
 	size_t size = 0;
 
@@ -30,6 +31,7 @@ int main(const int argc, const char **argv) {
 	size_t n_registers = 10;
 	const char *filename = nullptr;
 
+	// parse args
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--memory") == 0) {
 			memory_size = get_size(argc - i, argv + i);
@@ -54,6 +56,7 @@ int main(const int argc, const char **argv) {
 		throw std::invalid_argument("No file name provided");
 	}
 
+	// run program from file with parameters
 	machine::Machine machine(memory_size, n_registers);
 	machine.run(filename);
 

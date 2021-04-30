@@ -8,6 +8,7 @@
 
 namespace lang {
 
+// class to store a string
 class Token : public vector::Vector<char> {
 public:
 	Token();
