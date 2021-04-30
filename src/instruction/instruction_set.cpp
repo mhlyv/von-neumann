@@ -256,13 +256,11 @@ INSTRUCTION(relz_inst) {
 	OPERAND(src, 0);
 
 	// fix back jumps, compensate for the cpu incrementing the pc
-	int64_t signed_val = (int64_t)*(operands[1].left());
-	if (signed_val < 0) {
-		signed_val--;
-	}
+	memory::Data::data_t val = *(operands[1].left());
+	val--;
 
 	if (*src == 0) {
-		registers[0] += (memory::Data::data_t)signed_val;
+		registers[0] += val;
 	}
 }
 
@@ -287,13 +285,11 @@ INSTRUCTION(relnz_inst) {
 	OPERAND(src, 0);
 
 	// fix back jumps, compensate for the cpu incrementing the pc
-	int64_t signed_val = (int64_t)*(operands[1].left());
-	if (signed_val < 0) {
-		signed_val--;
-	}
+	memory::Data::data_t val = *(operands[1].left());
+	val--;
 
 	if (*src != 0) {
-		registers[0] += (memory::Data::data_t)signed_val;
+		registers[0] += val;
 	}
 }
 
