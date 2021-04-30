@@ -75,7 +75,7 @@ Tokenizer::Tokenizer(const char *filename) : ifs(filename), line() {
 // read and return the next token from the input stream
 Token Tokenizer::next_token() {
 	char in;
-	size_t read = 0;
+	Token token;
 
 	if (!this->ifs.is_open()) {
 		return Token();
@@ -86,20 +86,18 @@ Token Tokenizer::next_token() {
 	// if we reached an important character
 	if (this->important(this->ifs.peek())) {
 		this->ifs.get(in);
-		this->buffer[read] = in;
-		read++;
+		token.append(in);
 	} else {
 		// read until reaching whitespace ir an important character
 		while (!isspace(this->ifs.peek()) &&
 				!this->important(this->ifs.peek())) {
 			this->ifs.get(in);
-			this->buffer[read] = in;
-			read++;
+			token.append(in);
 		}
 	}
 
-	this->buffer[read] = '\0';
-	return Token(this->buffer);
+	token.append('\0');
+	return token;
 }
 
 // read and return the next line of tokens
