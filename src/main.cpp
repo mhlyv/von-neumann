@@ -30,6 +30,7 @@ int main(const int argc, const char **argv) {
 	size_t memory_size = 1000;
 	size_t n_registers = 10;
 	const char *filename = nullptr;
+	int exit_code = 0;
 
 	// parse args
 	for (int i = 1; i < argc; i++) {
@@ -56,9 +57,14 @@ int main(const int argc, const char **argv) {
 		throw std::invalid_argument("No file name provided");
 	}
 
-	// run program from file with parameters
-	machine::Machine machine(memory_size, n_registers);
-	machine.run(filename);
+	try {
+		// run program from file with parameters
+		machine::Machine machine(memory_size, n_registers);
+		machine.run(filename);
+	} catch (std::exception &e) {
+		std::cout << e.what() << std::endl;
+		exit_code = 1;
+	}
 
-	return 0;
+	return exit_code;
 }
