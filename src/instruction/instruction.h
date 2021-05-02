@@ -32,7 +32,6 @@ public:
 // argument
 class Instruction : public memory::Data {
 protected:
-	// the boolean is true if the operand is a register, otherwise false
 	vector::Vector<Operand> operands;
 public:
 	Instruction(size_t opcode, vector::Vector<Operand> &operands);
