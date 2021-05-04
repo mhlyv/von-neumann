@@ -16,7 +16,7 @@ void test_parser() {
 	// parser.print();
 	memory::Memory mem(1000);
 	size_t inst_count = parser.write_to(mem);
-	cpu::CPU cpu(2);
+	cpu::CPU cpu(3);
 	cpu.run(mem);
 	for (size_t i = 0; i < inst_count; i++) {
 		delete mem[i];
