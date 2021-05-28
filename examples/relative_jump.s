@@ -4,6 +4,7 @@ section .text
 	move r2, 0 ;   |
 	print r2   ; <-|
 
+	sub 1, 1
 	sub r2, 1    ; <-|
 	print r2     ;   |
 	relnz r2, -2 ; --|
